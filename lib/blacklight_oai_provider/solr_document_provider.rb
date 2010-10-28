@@ -6,42 +6,46 @@ module BlacklightOaiProvider
     attr_accessor :params, :extra_controller_params
     attr_reader :facet_limit_hash
     def initialize(options = {})
+      defaults = { :timestamp_field => 'timestamp', :limit => 15, :params => {} }
+      print defaults.inspect
+      print options.inspect
+      @options = defaults.merge options
       @model = Blacklight.solr 
-      @timestamp_field = options.delete(:timestamp_field) || 'timestamp'
-      @limit = options.delete(:limit)
-      @params = options.delete(:params) || {}
+      @timestamp_field = @options.delete(:timestamp_field) 
+      @limit = @options.delete(:limit)
+      @params = {}
       @facet_limit_hash = {}
-      @extra_controller_params = options
+      @extra_controller_params = @options
     end
 
     def sets
     end
 
     def earliest
-      Time.parse get_search_results({:sort => @timestamp_field +' asc', :rows => 1}).last.first.get(@timestamp_field)
+      Time.parse get_search_results({:sort => @timestamp_field +' asc', :rows => 1}.merge(extra_controller_params)).last.first.get(@timestamp_field)
     end
 
     def latest
-      Time.parse get_search_results({:sort => @timestamp_field +' desc', :rows => 1}).last.first.get(@timestamp_field)
+      Time.parse get_search_results({:sort => @timestamp_field +' desc', :rows => 1}.merge(extra_controller_params)).last.first.get(@timestamp_field)
     end
 
     def find(selector, options={})
                           return next_set(options[:resumption_token]) if options[:resumption_token]
                         if :all == selector
-                                response, records = get_search_results({:sort => @timestamp_field + ' asc', :rows => @limit})
+                                response, records = get_search_results({:sort => @timestamp_field + ' asc', :rows => @limit}.merge(extra_controller_params))
                                 total = records.count
 
                                 if @limit && total >= @limit
                                         return select_partial ResumptionToken.new options.merge({:last => 0})
                                 end
                         else
-                                records = get_search_results(:phrase_filters => {:id => selector.split('/', 2).last}).last.first
+                                records = get_search_results(:phrase_filters => {:id => selector.split('/', 2).last}.merge(extra_controller_params)).last.first
                         end
                         records
 
     end
     def select_partial token
-                        records = get_search_results({:sort => @timestamp_field + ' asc', :rows => @limit, :start => token.last}).last
+                        records = get_search_results({:sort => @timestamp_field + ' asc', :rows => @limit, :start => token.last}.merge(extra_controller_params)).last
 
                         raise ::OAI::ResumptionTokenException.new unless records
 
@@ -56,9 +60,15 @@ module BlacklightOaiProvider
                     end
   end
   class SolrDocumentProvider < ::OAI::Provider::Base
+    attr_accessor :options
+    def initialize options = {}
+      @options = Blacklight.config[:oai][:document].merge(options)
+      SolrDocumentProvider.model = SolrDocumentWrapper.new(@options)
+    end
+
     Blacklight.config[:oai][:provider].each do |k, v|
       self.send k, v
     end
-    source_model SolrDocumentWrapper.new Blacklight.config[:oai][:document]
+    #source_model SolrDocumentWrapper.new(@options) # Blacklight.config[:oai][:document]
   end
 end
