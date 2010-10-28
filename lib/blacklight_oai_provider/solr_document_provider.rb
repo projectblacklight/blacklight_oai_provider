@@ -3,10 +3,15 @@ module BlacklightOaiProvider
   class SolrDocumentWrapper < ::OAI::Provider::Model
     include Blacklight::SolrHelper
     attr_reader :model, :timestamp_field
+    attr_accessor :params, :extra_controller_params
+    attr_reader :facet_limit_hash
     def initialize(options = {})
       @model = Blacklight.solr 
       @timestamp_field = options.delete(:timestamp_field) || 'timestamp'
       @limit = options.delete(:limit)
+      @params = options.delete(:params) || {}
+      @facet_limit_hash = {}
+      @extra_controller_params = options
     end
 
     def sets
@@ -49,16 +54,6 @@ module BlacklightOaiProvider
                         token = ResumptionToken.parse token_string
                         select_partial token
                     end
-
-    def extra_controller_params
-
-    end
-def params
-  {}
-end
-def facet_limit_hash
-  {}
-end
   end
   class SolrDocumentProvider < ::OAI::Provider::Base
     Blacklight.config[:oai][:provider].each do |k, v|
