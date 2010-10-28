@@ -30,7 +30,7 @@ module BlacklightOaiProvider
                                         return select_partial ResumptionToken.new options.merge({:last => 0})
                                 end
                         else
-                                records = get_search_results({:id => selector}).last
+                                records = get_search_results(:phrase_filters => {:id => selector}).last.first
                         end
                         records
 
