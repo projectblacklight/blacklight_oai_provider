@@ -64,6 +64,7 @@ module BlacklightOaiProvider
     def initialize options = {}
       @options = Blacklight.config[:oai][:document].merge(options)
       SolrDocumentProvider.model = SolrDocumentWrapper.new(@options)
+      SolrDocumentProvider.url = (options.delete(:repository_url) if options[:repository_url]) || Blacklight.config[:oai][:provider][:repository_url]
     end
 
     Blacklight.config[:oai][:provider].each do |k, v|
