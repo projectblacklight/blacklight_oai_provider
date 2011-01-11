@@ -6,7 +6,7 @@ module BlacklightOaiProvider
     attr_accessor :params, :extra_controller_params
     attr_reader :facet_limit_hash
     def initialize(options = {})
-      defaults = { :timestamp_field => 'timestamp', :limit => 15} }
+      defaults = { :timestamp_field => 'timestamp', :limit => 15} 
       @options = defaults.merge options
       @model = Blacklight.solr 
       @timestamp_field = @options.delete(:timestamp_field) 
