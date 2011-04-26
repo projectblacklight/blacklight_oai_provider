@@ -10,23 +10,21 @@ module BlacklightOaiProvider
   def self.omit_inject ; @omit_inject ; end
   
   def self.inject!
-    Dispatcher.to_prepare do
-      
       unless omit_inject[:solrdocument_mixin]
         SolrDocument.send(:include, BlacklightOaiProvider::SolrDocumentOverride) unless SolrDocument.include?(BlacklightOaiProvider::SolrDocumentOverride)
       end
 
       unless omit_inject[:view_helpers]
-        CatalogController.add_template_helper(
+        CatalogController.helper(
           BlacklightOaiProvider::ViewHelperOverride
         ) unless
-         CatalogController.master_helper_module.include?( 
+         CatalogController._helpers.include?( 
             BlacklightOaiProvider::ViewHelperOverride
          )
-        CatalogController.add_template_helper(
+        CatalogController.helper(
           OaiProviderHelper
          ) unless
-          CatalogController.master_helper_module.include?( 
+          CatalogController._helpers.include?( 
             OaiProviderHelper
           )
       end
@@ -34,8 +32,6 @@ module BlacklightOaiProvider
       unless omit_inject[:controller_mixin]
         CatalogController.send(:include, BlacklightOaiProvider::ControllerOverride) unless CatalogController.include?(BlacklightOaiProvider::ControllerOverride)
       end
-      
-    end
   end
 
   # Add element to array only if it's not already there
