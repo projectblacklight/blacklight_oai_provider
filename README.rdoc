@@ -6,31 +6,31 @@ The BlacklightOaiProvider plugin provides an Open Archives Initiative Protocolo 
 
 = Requirements
 
-A Rails app using the Blacklight plugin (tested against post-version 2.5).
+A Rails app using Blacklight 3.x.
 
-OAI-PMH requires a timestamp field for all records, the name of which is configurable.
+OAI-PMH requires a timestamp field for all records, so your Solr index should include an appropriate field. By default, the name of this field is simply 'timestamp'.
 
 = Installation
 
-This is a plugin, not a gem (because the structure was copied from existing plugins; in theory, it should be possible to make this a gem in the future).
+Add
 
- A couple different ways to get the source into your vendor/plugins directory. 
+    gem "blacklight_oai_provider"
 
-Go into your application directory, and run: 
+to your Gemfile and  run "bundle install".
 
-./script/plugin install git://github.com/cbeer/blacklight_oai_provider.git
+Then run "rails generate blacklight_oai_provider" to install the appropriate extensions into your CatalogController and SolrDocument classes. In you want to do customize the way this installs, instead you may:
 
-Later you can run ./script/plugin update blacklight_oai_provider if you like. 
+- add this to your Solr Document model:
+    
+    use_extension(BlacklightOaiProvider::SolrDocumentExtension)
 
-Requires git installed on your system. There are other ways to get the plugin in there too.
+- add this to your Controler:
 
-OR
-cd $your_app/vendor/plugins
-git clone git://github.com/cbeer/blacklight_oai_provider.git 
+
 
 = Configuration
 
-You must provide a timestamp field from your solr configuration. In your config/initialiers/blacklight_config.rb, you may configure the field name (default 'timestamp') as config[:oai][:document]. You also must provide OAI-PMH data provider metadata as config[:oai][:provider], e.g.:
+While the plugin provides some sensible (albeit generic) defaults out of the box, you probably will want to customize the OAI provider configuration. You can provide OAI-PMH provider parameters by placing the following in your blacklight configuration (in ./config/initializers/blacklight_config.rb), e.g.:
 
 config[:oai] = {
     :provider => {
@@ -40,9 +40,12 @@ config[:oai] = {
       :admin_email => 'root@localhost'
     },
     :document => {
-      :timestamp => 'timestamp'
+      :timestamp => 'timestamp',
+      :limit => 25
     }
   }
+
+The "provider" configuration is documented as part of the ruby-oai gem at http://oai.rubyforge.org/
 
 
 == Injection
@@ -60,9 +63,7 @@ to turn off all injection. The plugin will be completely non-functional if you d
 You can also turn off injection of individual components, which could be more useful:
    
   BlacklightOaiProvider.omit_inject = {
-    :solrdocument_mixin => false,
-    :controller_mixin => false,
-    :view_helpers => false
+    :routes => false,
   }
 
 = Tests

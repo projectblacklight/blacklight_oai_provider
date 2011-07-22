@@ -1,6 +1,6 @@
 # Meant to be applied on top of SolrDocument to implement
 # methods required by the ruby-oai provider
-module BlacklightOaiProvider::SolrDocumentOverride
+module BlacklightOaiProvider::SolrDocumentExtension
   def timestamp
     Time.parse get('timestamp')
   end

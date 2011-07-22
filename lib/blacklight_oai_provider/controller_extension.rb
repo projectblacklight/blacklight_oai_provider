@@ -1,7 +1,7 @@
 # Meant to be applied on top of a controller that implements
 # Blacklight::SolrHelper. Will inject range limiting behaviors
 # to solr parameters creation. 
-module BlacklightOaiProvider::ControllerOverride
+module BlacklightOaiProvider::ControllerExtension
   def self.included(some_class)
     some_class.helper_method :oai_config
   end
@@ -12,15 +12,18 @@ module BlacklightOaiProvider::ControllerOverride
   # first found min/max from result set. 
   def oai
     options = params.delete_if { |k,v| %w{controller action}.include?(k) }
-    provider = BlacklightOaiProvider::SolrDocumentProvider.new
-    render :text => provider.process_request(options), :content_type => 'text/xml'
+    render :text => oai_provider.process_request(options), :content_type => 'text/xml'
   end
 
   # Uses Blacklight.config, needs to be modified when
   # that changes to be controller-based. This is the only method
   # in this plugin that accesses Blacklight.config, single point
   # of contact. 
-  def oai_config(solr_field)    
+  def oai_config    
     Blacklight.config[:oai] || {}
+  end
+
+  def oai_provider
+    @oai_provider ||= BlacklightOaiProvider::SolrDocumentProvider.new(self, oai_config)
   end
 end

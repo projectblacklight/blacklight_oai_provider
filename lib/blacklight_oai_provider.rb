@@ -1,6 +1,16 @@
 # BlacklightOaiProvider
 
 module BlacklightOaiProvider
+
+  autoload :ControllerExtension, 'blacklight_oai_provider/controller_extension'
+  autoload :SolrDocumentExtension, 'blacklight_oai_provider/solr_document_extension'
+  autoload :SolrDocumentProvider, 'blacklight_oai_provider/solr_document_provider'
+  autoload :SolrDocumentWrapper, 'blacklight_oai_provider/solr_document_wrapper'
+  autoload :RouteSets, 'blacklight_oai_provider/route_sets'
+
+  require 'oai'
+  require 'blacklight_oai_provider/version'
+  require 'blacklight_oai_provider/engine'
   
   @omit_inject = {}
   def self.omit_inject=(value)
@@ -10,28 +20,9 @@ module BlacklightOaiProvider
   def self.omit_inject ; @omit_inject ; end
   
   def self.inject!
-      unless omit_inject[:solrdocument_mixin]
-        SolrDocument.send(:include, BlacklightOaiProvider::SolrDocumentOverride) unless SolrDocument.include?(BlacklightOaiProvider::SolrDocumentOverride)
-      end
-
-      unless omit_inject[:view_helpers]
-        CatalogController.helper(
-          BlacklightOaiProvider::ViewHelperOverride
-        ) unless
-         CatalogController._helpers.include?( 
-            BlacklightOaiProvider::ViewHelperOverride
-         )
-        CatalogController.helper(
-          OaiProviderHelper
-         ) unless
-          CatalogController._helpers.include?( 
-            OaiProviderHelper
-          )
-      end
-
-      unless omit_inject[:controller_mixin]
-        CatalogController.send(:include, BlacklightOaiProvider::ControllerOverride) unless CatalogController.include?(BlacklightOaiProvider::ControllerOverride)
-      end
+    unless BlacklightRangeLimit.omit_inject[:routes]
+      Blacklight::Routes.send(:include, BlacklightOaiProvider::RouteSets)
+    end
   end
 
   # Add element to array only if it's not already there
