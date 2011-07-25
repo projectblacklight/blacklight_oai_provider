@@ -1,5 +1,5 @@
 require 'blacklight'
-require 'blacklight_range_limit'
+require 'blacklight_oai_provider'
 require 'rails'
 
 module BlacklightOaiProvider
