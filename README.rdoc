@@ -24,8 +24,9 @@ Then run "rails generate blacklight_oai_provider" to install the appropriate ext
     
     use_extension(BlacklightOaiProvider::SolrDocumentExtension)
 
-- add this to your Controler:
+- add this to your Controller:
 
+    include BlacklightOaiProvider::ControllerExtension
 
 
 = Configuration
