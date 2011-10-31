@@ -20,7 +20,7 @@ module BlacklightOaiProvider
   def self.omit_inject ; @omit_inject ; end
   
   def self.inject!
-    unless BlacklightRangeLimit.omit_inject[:routes]
+    unless BlacklightOaiProvider.omit_inject[:routes]
       Blacklight::Routes.send(:include, BlacklightOaiProvider::RouteSets)
     end
   end
