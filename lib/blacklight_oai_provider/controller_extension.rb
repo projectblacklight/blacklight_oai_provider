@@ -12,7 +12,7 @@ module BlacklightOaiProvider::ControllerExtension
   # first found min/max from result set. 
   def oai
     options = params.delete_if { |k,v| %w{controller action}.include?(k) }
-    render :text => oai_provider.process_request(options), :content_type => 'text/xml'
+    render :text => oai_provider.process_request(options).gsub('<?xml version="1.0" encoding="UTF-8"?>', "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<?xml-stylesheet type=\"text/xsl\" href=\"#{ asset_path('oai2.xsl')}\" ?>"), :content_type => 'text/xml'
   end
 
   # Uses Blacklight.config, needs to be modified when
