@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version = BlacklightOaiProvider::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ["Chris Beer"]
-  s.email = ["chris_beer@wgbh.org"]
+  s.email = ["chris@cbeer.info"]
   s.homepage    = "http://projectblacklight.org/"
   s.summary = "Blacklight Oai Provider plugin"
 
@@ -19,6 +19,11 @@ Gem::Specification.new do |s|
 
 
   s.add_dependency "rails", "~> 3.0"
-  s.add_dependency "blacklight"
+  s.add_dependency "blacklight", "~> 3.2"
   s.add_dependency "oai"
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'capybara'
+  s.add_development_dependency 'vcr'
+  s.add_development_dependency 'fakeweb'
 end
