@@ -1,9 +1,10 @@
 module BlacklightOaiProvider
+
   module RouteSets
     protected
     def catalog
       add_routes do |options|
-        match 'catalog/oai' => 'catalog#oai', :as => 'oai_provider'
+        get 'catalog/oai' => 'catalog#oai', :as => 'oai_provider'
       end
 
       super
