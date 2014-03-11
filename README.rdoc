@@ -31,9 +31,13 @@ Then run "rails generate blacklight_oai_provider" to install the appropriate ext
 
 = Configuration
 
-While the plugin provides some sensible (albeit generic) defaults out of the box, you probably will want to customize the OAI provider configuration. You can provide OAI-PMH provider parameters by placing the following in your blacklight configuration (in ./config/initializers/blacklight_config.rb), e.g.:
+While the plugin provides some sensible (albeit generic) defaults out of the box, you probably will want to customize the OAI provider configuration.
 
-config[:oai] = {
+== For Blacklight 3.x.x
+
+You can provide OAI-PMH provider parameters by placing the following in your blacklight configuration, in `./config/initializers/blacklight_config.rb`
+
+  config[:oai] = {
     :provider => {
       :repository_name => 'Test',
       :repository_url => 'http://localhost',
@@ -46,8 +50,32 @@ config[:oai] = {
     }
   }
 
-The "provider" configuration is documented as part of the ruby-oai gem at http://oai.rubyforge.org/
+== For Blacklight 4.x.x
 
+in `app/controllers/catalog_controller.rb`
+
+  configure_blacklight do |config|
+
+    # ...
+
+    config.oai = {
+      :provider => {
+        :repository_name => 'Test',
+        :repository_url => 'http://localhost',
+        :record_prefix => '',
+        :admin_email => 'root@localhost'
+      },
+      :document => {
+        :timestamp => 'timestamp',
+        :limit => 25
+      }
+    }
+
+    # ...
+
+  end
+
+The "provider" configuration is documented as part of the ruby-oai gem at http://oai.rubyforge.org/
 
 == Injection
 
