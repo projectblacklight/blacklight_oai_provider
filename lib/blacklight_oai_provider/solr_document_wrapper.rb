@@ -5,7 +5,7 @@ module BlacklightOaiProvider
     def initialize(controller, options = {})
       @controller = controller
 
-      defaults = { :timestamp => 'timestamp', :limit => 15} 
+      defaults = { :timestamp => 'timestamp', :limit => 15}
       @options = defaults.merge options
 
       @timestamp_field = @options[:timestamp]
@@ -32,8 +32,8 @@ module BlacklightOaiProvider
         if @limit && response.total >= @limit
           return select_partial(OAI::Provider::ResumptionToken.new(options.merge({:last => 0})))
         end
-      else                                                    
-        records = @controller.get_search_results(@controller.params, {:phrase_filters => {:id => selector.split('/', 2).last}}).last.first
+      else
+        response, records = @controller.get_solr_response_for_doc_id selector.split('/', 2).last
       end
       records
     end
