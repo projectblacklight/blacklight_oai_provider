@@ -165,8 +165,8 @@ p.intro {
     <xsl:apply-templates select="/oai:OAI-PMH" />
     <xsl:call-template name="quicklinks"/>
     <h2><a name="moreinfo">About the XSLT</a></h2>
-    <p>An XSLT file has converted the <a href="http://www.openarchives.org">OAI-PMH 2.0</a> responses into XHTML which looks nice in a browser which supports XSLT such as Mozilla, Firebird and Internet Explorer. The XSLT file was created by <a href="http://www.ecs.soton.ac.uk/people/cjg">Christopher Gutteridge</a> at the University of Southampton as part of the <a href="http://software.eprints.org">GNU EPrints system</a>, and is freely redistributable under the <a href="http://www.gnu.org">GPL</a>.</p><p>If you want to use the XSL file on your own OAI interface you may but due to the way XSLT works you must install the XSL file on the same server as the OAI script, you can't just link to this copy.</p><p>For more information or to download the XSL file please see the <a href="http://software.eprints.org/xslt.php">OAI to XHTML XSLT homepage</a>.</p>
-
+    <p>An XSLT file has converted the <a href="http://www.openarchives.org">OAI-PMH 2.0</a> responses into XHTML which looks nice in a browser which supports XSLT such as Firefox, Chrome, Safari, and Internet Explorer. The XSLT file was created by <a href="http://www.ecs.soton.ac.uk/people/cjg">Christopher Gutteridge</a> at the University of Southampton as part of the <a href="http://software.eprints.org">GNU EPrints system</a>, and is freely redistributable under the <a href="http://www.gnu.org">GPL</a>.</p>
+    <p>For more information or to download the XSL file please see the <a href="http://software.eprints.org/xslt.php">OAI to XHTML XSLT homepage</a>.</p>
   </body>
 </html>
 </xsl:template>
@@ -433,9 +433,11 @@ p.intro {
 <xsl:template match="oai:set">
   <h2>Set</h2>
   <table class="values">
+    <xsl:apply-templates select="oai:setSpec" />
     <tr><td class="key">setName</td>
     <td class="value"><xsl:value-of select="oai:setName"/></td></tr>
-    <xsl:apply-templates select="oai:setSpec" />
+    <tr><td class="key">setDescription</td>
+    <td class="value"><xsl:value-of select="oai:setDescription"/></td></tr>
   </table>
 </xsl:template>
 
