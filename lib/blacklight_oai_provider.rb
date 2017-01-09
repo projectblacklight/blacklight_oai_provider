@@ -4,6 +4,7 @@ module BlacklightOaiProvider
   autoload :SolrDocumentWrapper, 'blacklight_oai_provider/solr_document_wrapper'
   autoload :ResumptionToken, 'blacklight_oai_provider/resumption_token'
   autoload :Routes, 'blacklight_oai_provider/routes'
+  autoload :Set, 'blacklight_oai_provider/set'
 
   require 'oai'
   require 'blacklight_oai_provider/version'

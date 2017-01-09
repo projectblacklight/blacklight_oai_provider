@@ -8,9 +8,16 @@ module BlacklightOaiProvider
       @solr_timestamp  = document_model.timestamp_key
       @timestamp_field = 'timestamp' # method name used by ruby-oai
       @limit           = options[:limit] || 15
+      @set             = (options[:set_class] || 'BlacklightOaiProvider::Set').constantize
+
+      @set.repository = @controller.repository
+      @set.search_builder = @controller.search_builder
+      @set.fields = options[:set_fields]
     end
 
-    def sets; end
+    def sets
+      @set.all
+    end
 
     def earliest
       _response, records = @controller.get_search_results(@controller.params, { fl: solr_timestamp, sort: "#{solr_timestamp} asc", rows: 1 })
@@ -54,14 +61,28 @@ module BlacklightOaiProvider
 
     private
 
+<<<<<<< HEAD
     def base_conditions
       { sort: "#{solr_timestamp} asc", rows: limit }
     end
+=======
+    def search_repository(params = {})
+      conditions = params.delete(:conditions) || {}
+
+      params[:sort] = "#{@timestamp_query_field} #{params[:sort] || 'asc'}"
+      params[:rows] = params[:rows] || @limit
+
+      query = @controller.search_builder.with(@controller.params).merge(params).query
+
+      query.append_filter_query(date_filter(conditions)) if conditions[:from] || conditions[:until]
+      query.append_filter_query(@set.from_spec(conditions[:set])) if conditions[:set]
+>>>>>>> 7b923c6... Use Set model and provide basic set support OOB
 
     def token_conditions(token)
       conditions(token.to_conditions_hash).merge(start: token.last)
     end
 
+<<<<<<< HEAD
     def conditions(options) # conditions/query derived from options
       if !(options[:from].blank? && options[:until].blank?)
         base_conditions.merge(
@@ -80,6 +101,12 @@ module BlacklightOaiProvider
       else
         time.to_s
       end
+=======
+    def date_filter(conditions = {})
+      from = conditions[:from] || earliest
+      to = conditions[:until] || latest
+      "#{@timestamp_query_field}:[#{from.utc.iso8601} TO #{to.utc.iso8601}]"
+>>>>>>> 7b923c6... Use Set model and provide basic set support OOB
     end
   end
 end

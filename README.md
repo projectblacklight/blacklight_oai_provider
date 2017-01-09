@@ -71,7 +71,6 @@ You can provide OAI-PMH provider parameters by placing the following in your bla
     }
 
     # ...
-
   end
 ```
 
@@ -97,11 +96,36 @@ The metadata displayed in the xml serialization of each record is based off the 
     format: "format"
   )
 ```
-
 The fields used by the dublin core serialization are:
 ```ruby
   [:contributor, :coverage, :creator, :date, :description, :format, :identifier, :language, :publisher, :relation, :rights, :source, :subject, :title, :type]
 ```
+
+A basic set model is included that maps Solr fields to OAI sets. First, provide the fields to use as sets in the OAI config:
+
+    config.oai = {
+      document: {
+        set_fields: 'language'
+      }
+    }
+
+This will cause the `ListSets` verb to query Solr for unique values of the `language` field and present each value as a set using a spec format of `language:value`. When the `set` parameter is supplied to the `ListRecords` verb, it will append a filter to the Solr query of the form `fq=language:value`.
+
+Finally, your `SolrDocument` model must implement a `sets` method that returns an array of sets for each document. Ex:
+
+    def sets
+      fetch('language', []).map { |l| BlacklightOaiProvider::Set.new("language:#{l}") }
+    end
+
+You can substitute you own Set model using the `set_class` option. See `lib/blacklight_oai_provider/set` for an example implementation.
+
+    config.oai = {
+      document: {
+        set_fields: 'language',
+        set_model: '::MySetModel'
+      }
+    }
+
 
 ## Injection
 This plugin assumes it is in a Blacklight Rails app, uses Blacklight methods, Rails methods, and standard ruby module includes to inject it's behaviors into the app.
