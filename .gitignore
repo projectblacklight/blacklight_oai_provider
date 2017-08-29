@@ -1,0 +1,18 @@
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+*.gem
+.ruby-version
+.ruby-gemset
+
+# rspec failure tracking
+.rspec_status
+
+# Ignoring files created for dummy/test application.
+spec/internal/db/*.sqlite
