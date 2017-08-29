@@ -10,7 +10,7 @@ describe 'Blacklight oai provider' do
         :rows => 10,
         :fl => 'id, title_display, author_display, format, timestamp'
       }
-      
+
       config.oai = {
         :provider => {
           :repository_name => 'Test',
@@ -43,7 +43,7 @@ describe 'Blacklight oai provider' do
   end
 
   it "document page" do
-    visit '/catalog/oai?verb=GetRecord&identifier=00282214'
+    visit '/catalog/oai?verb=GetRecord&identifier=00282214&metadataPrefix=oai_dc'
     page.should have_xpath('//title', :content => 'Fikr-i Ayāz')
   end
 end
