@@ -19,12 +19,14 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ['>= 1.9.3', '< 2.2.6'] # This is an estimate.
 
-  s.add_dependency "rails", ">= 3.0"
+  s.add_dependency "rails", "~> 3.0"
   s.add_dependency "blacklight", "~> 3.0"
   s.add_dependency "oai"
+  s.add_dependency "nokogiri", "< 1.7.0"
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'capybara'
+  s.add_development_dependency 'addressable', '< 2.4.0'
   s.add_development_dependency 'vcr'
   s.add_development_dependency 'fakeweb'
 end
