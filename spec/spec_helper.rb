@@ -6,8 +6,6 @@ Bundler.require :default, :development
 require 'blacklight/engine'
 require 'blacklight_oai_provider/engine'
 require 'rsolr'
-require 'rsolr-ext'
-require 'rsolr-ext/response'
 require 'capybara/rspec'
 Combustion.initialize!
 
@@ -19,14 +17,14 @@ CatalogController.send(:include, BlacklightOaiProvider::ControllerExtension)
 class SolrDocument
   include Blacklight::Solr::Document
   include BlacklightOaiProvider::SolrDocumentExtension
-use_extension( Blacklight::Solr::Document::DublinCore)    
-  field_semantics.merge!(    
+use_extension( Blacklight::Solr::Document::DublinCore)
+  field_semantics.merge!(
                          :title => "title_display",
                          :author => "author_display",
                          :language => "language_facet",
                          :format => "format"
                          )
-  
+
 end
 
 require 'vcr'
@@ -44,4 +42,3 @@ RSpec.configure do |config|
   config.extend VCR::RSpec::Macros
 
 end
-
