@@ -1,13 +1,8 @@
-require 'rubygems'
 require 'bundler'
 
 Bundler.require :default, :development
 
-require 'blacklight/engine'
-require 'blacklight_oai_provider/engine'
-require 'rsolr'
-require 'capybara/rspec'
-Combustion.initialize!
+Combustion.initialize! :all
 
 
 # Setup blacklight environment
@@ -17,7 +12,7 @@ CatalogController.send(:include, BlacklightOaiProvider::ControllerExtension)
 class SolrDocument
   include Blacklight::Solr::Document
   include BlacklightOaiProvider::SolrDocumentExtension
-use_extension( Blacklight::Solr::Document::DublinCore)
+  use_extension( Blacklight::Solr::Document::DublinCore)
   field_semantics.merge!(
                          :title => "title_display",
                          :author => "author_display",
@@ -40,5 +35,4 @@ require 'capybara/rails'
 
 RSpec.configure do |config|
   config.extend VCR::RSpec::Macros
-
 end
