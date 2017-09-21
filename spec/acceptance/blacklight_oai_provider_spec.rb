@@ -35,7 +35,7 @@ describe 'Blacklight oai provider' do
   it "identify page" do
     visit '/catalog/oai?verb=Identify'
     page.should have_content 'root@localhost'
-    page.should have_xpath('//earliestdatestamp', :content => '2012-08-01T16:49:55Z')
+    page.should have_xpath('//earliestdatestamp', :text => '2012-08-01T16:49:55Z')
   end
 
   it "should list records" do
