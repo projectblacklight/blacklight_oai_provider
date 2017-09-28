@@ -2,7 +2,6 @@
 require 'spec_helper'
 
 describe 'Blacklight oai provider' do
-  use_vcr_cassette "solr"
   before do
     CatalogController.configure_blacklight do |config|
       config.index.show_link = 'title_display'
@@ -44,6 +43,6 @@ describe 'Blacklight oai provider' do
 
   it "document page" do
     visit '/catalog/oai?verb=GetRecord&identifier=00282214&metadataPrefix=oai_dc'
-    page.should have_xpath('//title', :content => 'Fikr-i Ayāz')
+    page.should have_xpath('//title', :text => 'Fikr-i Ayāz')
   end
 end
