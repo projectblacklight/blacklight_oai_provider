@@ -1,7 +1,4 @@
-# BlacklightOaiProvider
-
 module BlacklightOaiProvider
-
   autoload :ControllerExtension, 'blacklight_oai_provider/controller_extension'
   autoload :SolrDocumentExtension, 'blacklight_oai_provider/solr_document_extension'
   autoload :SolrDocumentProvider, 'blacklight_oai_provider/solr_document_provider'
@@ -11,14 +8,14 @@ module BlacklightOaiProvider
   require 'oai'
   require 'blacklight_oai_provider/version'
   require 'blacklight_oai_provider/engine'
-  
+
   @omit_inject = {}
   def self.omit_inject=(value)
     value = Hash.new(true) if value == true
-    @omit_inject = value      
+    @omit_inject = value
   end
   def self.omit_inject ; @omit_inject ; end
-  
+
   def self.inject!
     unless BlacklightOaiProvider.omit_inject[:routes]
       Blacklight::Routes.send(:include, BlacklightOaiProvider::RouteSets)
@@ -29,5 +26,9 @@ module BlacklightOaiProvider
   def self.safe_arr_add(array, element)
     array << element unless array.include?(element)
   end
-  
+
+  # returns the full path the the blacklight plugin installation
+  def self.root
+    @root ||= File.expand_path(File.dirname(File.dirname(__FILE__)))
+  end
 end
