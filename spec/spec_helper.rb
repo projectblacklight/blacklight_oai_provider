@@ -1,11 +1,3 @@
-require 'bundler'
-
-Bundler.require :default, :development
-
-Combustion.initialize! :all do
-  config.assets.precompile += %w( oai2.xsl ) ## Needs to be added as a generator
-end
-
 # Setup blacklight environment
 Blacklight.solr_config = { :url => 'http://127.0.0.1:8983/solr' }
 CatalogController.send(:include, BlacklightOaiProvider::ControllerExtension)
