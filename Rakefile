@@ -9,6 +9,8 @@ require 'solr_wrapper'
 
 EngineCart.fingerprint_proc = EngineCart.rails_fingerprint_proc
 
+task :default => :ci
+
 desc "Run specs"
 RSpec::Core::RakeTask.new
 
