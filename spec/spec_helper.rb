@@ -23,17 +23,9 @@ class SolrDocument
 
 end
 
-require 'vcr'
-
-VCR.configure do |config|
-  config.hook_into :fakeweb
-  config.cassette_library_dir = 'spec/vcr_cassettes'
-  config.default_cassette_options = { :serialize_with => :syck }
-end
 
 require 'rspec/rails'
 require 'capybara/rails'
 
 RSpec.configure do |config|
-  config.extend VCR::RSpec::Macros
 end
