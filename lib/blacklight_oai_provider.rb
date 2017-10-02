@@ -1,5 +1,6 @@
 module BlacklightOaiProvider
   autoload :ControllerExtension, 'blacklight_oai_provider/controller_extension'
+  autoload :Exceptions,  'blacklight_oai_provider/exceptions'
   autoload :SolrDocumentExtension, 'blacklight_oai_provider/solr_document_extension'
   autoload :SolrDocumentProvider, 'blacklight_oai_provider/solr_document_provider'
   autoload :SolrDocumentWrapper, 'blacklight_oai_provider/solr_document_wrapper'
