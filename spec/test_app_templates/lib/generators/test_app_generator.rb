@@ -59,11 +59,13 @@ class TestAppGenerator < Rails::Generators::Base
     insert_into_file "app/controllers/catalog_controller.rb", :after => "configure_blacklight do |config|\n" do
 %{
     config.oai = {
-        :provider => {
-        :repository_name => 'Test',
+      :provider => {
+        :repository_name => 'Test Repository',
         :repository_url => 'http://localhost',
-        :record_prefix => '',
-        :admin_email => 'root@localhost'
+        :record_prefix => 'test',
+        :admin_email => 'root@localhost',
+        :deletion_support => 'persistent',
+        :sample_id => '109660'
       },
       :document => {
         :timestamp => 'timestamp',
