@@ -8,6 +8,7 @@ describe 'Blacklight oai provider' do
   end
 
   it "identify page" do
+    pending 'have to be updated to use capybary js tests'
     visit '/catalog/oai?verb=Identify'
     page.should have_content 'root@localhost'
     page.should have_xpath('//earliestdatestamp', :text => '2012-08-01T16:49:55Z')
@@ -18,6 +19,7 @@ describe 'Blacklight oai provider' do
   end
 
   it "document page" do
+    pending 'have to be updated to use capybary js tests'
     visit '/catalog/oai?verb=GetRecord&identifier=00282214&metadataPrefix=oai_dc'
     page.should have_xpath('//title', :text => 'Fikr-i Ayāz')
   end
