@@ -2,30 +2,6 @@
 require 'spec_helper'
 
 describe 'Blacklight oai provider' do
-  before do
-    CatalogController.configure_blacklight do |config|
-      config.index.show_link = 'title_display'
-      config.default_solr_params = {
-        :rows => 10,
-        :fl => 'id, title_display, author_display, format, timestamp'
-      }
-
-      config.oai = {
-        :provider => {
-          :repository_name => 'Test',
-          :repository_url => 'http://localhost',
-          :record_prefix => '',
-          :admin_email => 'root@localhost'
-        },
-        :document => {
-          :timestamp => 'timestamp',
-          :limit => 25
-        }
-      }
-
-    end
-  end
-
   it "root page" do
     visit '/catalog/oai'
     page.should have_content 'not a legal OAI-PMH verb'
