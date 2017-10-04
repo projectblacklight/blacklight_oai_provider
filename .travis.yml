@@ -8,5 +8,9 @@ rvm:
   - 2.2
   - 2.1
 
+env:
+ - "RAILS_VERSION=4.2.9"
+ - "RAILS_VERSION=4.1.16"
+
 before_install:
   - gem install bundler
