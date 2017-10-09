@@ -15,11 +15,11 @@ module BlacklightOaiProvider
       end
     end
 
-    def inject_catalog_controller_extension
+    def inject_catalog_controller_concern
       file_path = "app/controllers/#{controller_name.underscore}.rb"
       if File.exists? file_path
         inject_into_file file_path, :after => "include Blacklight::Catalog" do
-          "\n  include BlacklightOaiProvider::ControllerExtension\n"
+          "\n  include BlacklightOaiProvider::Controller\n"
         end
       end
     end

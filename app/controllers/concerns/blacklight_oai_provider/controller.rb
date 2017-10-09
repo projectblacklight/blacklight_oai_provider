@@ -1,9 +1,11 @@
 # Meant to be applied on top of a controller that implements
 # Blacklight::SolrHelper. Will inject range limiting behaviors
 # to solr parameters creation.
-module BlacklightOaiProvider::ControllerExtension
-  def self.included(some_class)
-    some_class.helper_method :oai_config
+module BlacklightOaiProvider::Controller
+  extend ActiveSupport::Concern
+
+  included do
+    helper_method :oai_config
   end
 
   # Action method of our own!
