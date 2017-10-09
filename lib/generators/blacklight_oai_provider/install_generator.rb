@@ -5,12 +5,12 @@ module BlacklightOaiProvider
     argument :model_name, :type => :string, :default => "SolrDocument"
     argument :controller_name, :type => :string, :default => "CatalogController"
 
-    def inject_solr_document_extension
+    def inject_solr_document_concern
       file_path = "app/models/#{model_name.underscore}.rb"
 
       if File.exists? file_path
         inject_into_file file_path, :after => "include Blacklight::Solr::Document" do
-          "\n  SolrDocument.use_extension( BlacklightOaiProvider::SolrDocumentExtension )\n"
+          "\n  include BlacklightOaiProvider::SolrDocument\n"
         end
       end
     end

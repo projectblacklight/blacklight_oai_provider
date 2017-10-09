@@ -1,6 +1,6 @@
-# Meant to be applied on top of SolrDocument to implement
-# methods required by the ruby-oai provider
-module BlacklightOaiProvider::SolrDocumentExtension
+module BlacklightOaiProvider::SolrDocument
+  extend ActiveSupport::Concerns
+
   def timestamp
     timestamp = get('timestamp')
     raise BlacklightOaiProvider::Exceptions::MissingTimestamp if timestamp.blank?
