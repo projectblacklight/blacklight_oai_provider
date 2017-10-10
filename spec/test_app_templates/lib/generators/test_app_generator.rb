@@ -45,6 +45,17 @@ class TestAppGenerator < Rails::Generators::Base
       "      :fl => '*',\n"
     end
 
+    insert_into_file "app/controllers/catalog_controller.rb", :after => "  configure_blacklight do |config|\n" do
+%{
+    config.default_document_solr_params = {
+          :qt => 'search',
+          :fl => '*',
+          :rows => 1,
+          :q => '{!raw f=id v=$id}'
+    }
+}
+    end
+
     insert_into_file "app/controllers/catalog_controller.rb", :after => "configure_blacklight do |config|\n" do
 %{
     config.oai = {
