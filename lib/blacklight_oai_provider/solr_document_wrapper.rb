@@ -26,10 +26,10 @@ module BlacklightOaiProvider
       return next_set(options[:resumption_token]) if options[:resumption_token]
 
       if :all == selector
-        response, records = @controller.get_search_results(@controller.params, {:sort => @timestamp_field + ' asc', :rows => @limit})
+        response, records = @controller.get_search_results(@controller.params, conditions(options))
 
-        if @limit && response.total >= @limit
-          return select_partial(OAI::Provider::ResumptionToken.new(options.merge({:last => 0})))
+        if @limit && response.total > @limit
+          return select_partial(BlacklightOaiProvider::ResumptionToken.new(options.merge({:last => 0}), nil, response.total))
         end
       else
         response, records = @controller.get_solr_response_for_doc_id selector.split('/', 2).last
@@ -38,7 +38,7 @@ module BlacklightOaiProvider
     end
 
     def select_partial token
-      records = @controller.get_search_results(@controller.params, {:sort => @timestamp_field + ' asc', :rows => @limit, :start => token.last}).last
+      response, records = @controller.get_search_results(@controller.params, token_conditions(token))
 
       raise ::OAI::ResumptionTokenException.new unless records
 
@@ -48,9 +48,38 @@ module BlacklightOaiProvider
     def next_set(token_string)
       raise ::OAI::ResumptionTokenException.new unless @limit
 
-      token = OAI::Provider::ResumptionToken.parse(token_string)
+      token = BlacklightOaiProvider::ResumptionToken.parse(token_string)
       select_partial(token)
+    end
+
+    private
+
+    def base_conditions
+      { :sort => "#{@timestamp_field} asc", :rows => @limit }
+    end
+
+    def token_conditions(token)
+      base_conditions.merge({:start => token.last})
+    end
+
+    def conditions(options) # conditions/query derived from options
+      if !(options[:from].blank? && options[:until].blank?)
+        base_conditions.merge(
+          { :fq => "#{timestamp_field}:[#{solr_date(options[:from])} TO #{solr_date(options[:until])}]" }
+        )
+      else
+        base_conditions
+      end
+    end
+
+    def solr_date(time)
+      if time.respond_to?(:strftime)
+        time.strftime("%Y-%m-%dT%H:%M:%SZ")
+      elsif time.blank?
+        '*'
+      else
+        time.to_s
+      end
     end
   end
 end
-
