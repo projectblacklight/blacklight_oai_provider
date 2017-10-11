@@ -1,15 +1,14 @@
 module BlacklightOaiProvider
   class SolrDocumentWrapper < ::OAI::Provider::Model
-    attr_reader :model, :timestamp_field
+    DEFAULT_CONFIG = { :timestamp => 'timestamp', :limit => 15 }.freeze
+
     attr_accessor :options
+
     def initialize(controller, options = {})
       @controller = controller
-
-      defaults = { :timestamp => 'timestamp', :limit => 15}
-      @options = defaults.merge options
-
-      @timestamp_field = @options[:timestamp]
-      @limit = @options[:limit]
+      @options = DEFAULT_CONFIG.merge(options)
+      @timestamp_field = options[:timestamp]
+      @limit = options[:limit]
     end
 
     def sets
@@ -43,7 +42,7 @@ module BlacklightOaiProvider
 
       raise ::OAI::ResumptionTokenException.new unless records
 
-      OAI::Provider::PartialResult.new(records, token.next(token.last+@limit))
+      OAI::Provider::PartialResult.new(records, token.next(token.last + @limit))
     end
 
     def next_set(token_string)
