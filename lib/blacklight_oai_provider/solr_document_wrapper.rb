@@ -65,7 +65,7 @@ module BlacklightOaiProvider
     def conditions(options) # conditions/query derived from options
       if !(options[:from].blank? && options[:until].blank?)
         base_conditions.merge(
-          { :fq => "#{timestamp_field}:[#{solr_date(options[:from])} TO #{solr_date(options[:until])}]" }
+          { :fq => "#{timestamp_field}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]" }
         )
       else
         base_conditions
@@ -73,8 +73,8 @@ module BlacklightOaiProvider
     end
 
     def solr_date(time)
-      if time.respond_to?(:strftime)
-        time.strftime("%Y-%m-%dT%H:%M:%SZ")
+      if time.respond_to?(:xmlschema)
+        time.xmlschema
       elsif time.blank?
         '*'
       else
