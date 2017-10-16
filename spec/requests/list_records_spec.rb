@@ -89,9 +89,24 @@ describe 'OIA-PMH ListRecords Request' do
     end
   end
 
+  context 'throws noRecordsMatch error' do
+    before :example do
+      get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2015-01-01'
+    end
+
+    it 'returns no records error' do
+      expect(xml.at_xpath('//xmlns:error').attribute('code').text).to eql 'noRecordsMatch'
+    end
+  end
+
   context 'throws badArgument error' do
     it 'when metadataPrefix argument missing' do
       get '/catalog/oai?verb=ListRecords'
+      expect(xml.at_xpath('//xmlns:error[@code]').attribute('code').text).to eql 'badArgument'
+    end
+
+    it "when date is invalid" do
+      get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2012-01-f01'
       expect(xml.at_xpath('//xmlns:error[@code]').attribute('code').text).to eql 'badArgument'
     end
   end

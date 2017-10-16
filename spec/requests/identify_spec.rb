@@ -7,6 +7,10 @@ describe 'OIA-PMH Identify Request' do
     get '/catalog/oai?verb=Identify'
   end
 
+  it "contains response date" do
+    expect(Time.parse(xml.at_xpath('//xmlns:responseDate').text)).to be_within(5.seconds).of(Time.now)
+  end
+
   it "contains repository name" do
     expect(xml.at_xpath('//xmlns:repositoryName').text).to eql 'Test Repository'
   end
