@@ -528,13 +528,20 @@ p.intro {
 <!-- oai resumptionToken -->
 
 <xsl:template match="oai:resumptionToken">
-   <p>There are more results.</p>
-   <table class="values">
-     <tr><td class="key">resumptionToken:</td>
-     <td class="value"><xsl:value-of select="."/>
+  <xsl:choose>
+    <xsl:when test="self::node()[text()]">
+      <p>There are more results.</p>
+      <table class="values">
+        <tr><td class="key">resumptionToken:</td>
+        <td class="value"><xsl:value-of select="."/>
 <xsl:text> </xsl:text>
 <a class="link" href="?verb={/oai:OAI-PMH/oai:request/@verb}&amp;resumptionToken={.}">Resume</a></td></tr>
-   </table>
+      </table>
+    </xsl:when>
+    <xsl:otherwise>
+      <p>End of results.</p>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <!-- unknown metadata format -->
