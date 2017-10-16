@@ -18,13 +18,13 @@ describe 'OIA-PMH ListIdentifiers Request' do
     end
 
     it 'contains resumptionToken' do
-      expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql 'oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z):25'
+      expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql 'oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z).t(30):25'
     end
   end
 
   context 'with resumption_token' do
     before :example do
-      get '/catalog/oai?verb=ListIdentifiers&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-02-03T18:42:53Z):25'
+      get '/catalog/oai?verb=ListIdentifiers&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-02-03T18:42:53Z).t(30):25'
     end
 
     it 'returns 5 records' do
@@ -37,7 +37,6 @@ describe 'OIA-PMH ListIdentifiers Request' do
     end
 
     it 'does not contain a resumptionToken' do
-      pending 'ResumptionToken needs to be removed if there aren\'t more records.'
       expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql ''
     end
   end
@@ -48,13 +47,11 @@ describe 'OIA-PMH ListIdentifiers Request' do
     end
 
     it 'returns 1 record' do
-      pending 'Filtering by date needs to be implemented.'
       expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to eql 1
     end
 
     it 'does not contain a resumptionToken' do
-      pending 'Filtering by date needs to be implemented implemented'
-      expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql ''
+      expect(xml.at_xpath('//xmlns:resumptionToken')).to be_nil
     end
   end
 end
