@@ -58,6 +58,7 @@
   language_facet:
   - Urdu
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - M - Music
   author_t:
@@ -112,6 +113,7 @@
   language_facet:
   - Urdu
   timestamp: '2014-03-03T18:42:53.056Z'
+  record_creation_dt: '2014-03-03T18:42:53.056Z'
 - subtitle_display: 'guft va gū-yi Akbar Ganjī bā ʻAbd Allāh Nūrī : bih payvast-i
     matn-i istīz̤āḥ-i ʻAbd Allāh Nūrī dar Majlis-i panjum'
   author_vern_display: "‏نورى، عبد الله"
@@ -249,6 +251,7 @@
   language_facet:
   - Persian
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - author_t:
   - Yoshida, Hajime,
   - "吉田一"
@@ -330,6 +333,7 @@
   language_facet:
   - Japanese
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - D - World History
   author_t:
@@ -399,6 +403,7 @@
   language_facet:
   - Russian
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - K - Law
   author_t:
@@ -471,6 +476,7 @@
   language_facet:
   - Russian
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - D - World History
   marc_display: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><collection xmlns=\"http://www.loc.gov/MARC21/slim\"><record><leader>01062cam
@@ -560,6 +566,7 @@
   language_facet:
   - Korean
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - P - Language & Literature
   author_t:
@@ -626,6 +633,7 @@
   language_facet:
   - Sanskrit
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2015-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - H - Social Sciences
   author_t:
@@ -689,6 +697,7 @@
   language_facet:
   - Urdu
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - M - Music
   author_t:
@@ -747,6 +756,7 @@
   language_facet:
   - Sanskrit
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - subtitle_display: sipurim mafliʼim ha-mevusasim ʻal ʻuvdot hisṭoriyot
   author_vern_display: "‏פינקל, חיים יעקב"
   subject_addl_t:
@@ -842,6 +852,7 @@
   language_facet:
   - Hebrew
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - B - Philosophy, Psychology, Religion
   author_t:
@@ -942,6 +953,7 @@
   language_facet:
   - Persian
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - M - Music
   author_t:
@@ -998,6 +1010,7 @@
   subtitle_t:
   - tʻeoriul-metʻoduri narkvevi /
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - K - Law
   author_t:
@@ -1084,6 +1097,7 @@
   language_facet:
   - Korean
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - subtitle_display: ṿe-hu perush yafeh u-menupeh ʻal Shulḥan ʻarukh Oraḥ ḥayim
     asher ḥiber Yosef Ḳaro ... ʻim ḥidushe dinim she-hishmiṭ ha-gaʼon ... ṿe-himtsiʼam
     ... Mosheh Iserlish
@@ -1248,6 +1262,7 @@
   language_facet:
   - Hebrew
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - subtitle_display: 'kangnam yŏin kwa sin pʻalbulchʻul : Kim Hong-sin setʻae rŭpʻo'
   author_vern_display: "김　홍신, 1947-"
   subject_addl_t:
@@ -1342,6 +1357,7 @@
   language_facet:
   - Korean
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - subtitle_display: dar khiradvarzī-i siyāsī va huvīyat-i mā Īrānīyān
   author_vern_display: "‏رجايى، فرهنگ ."
   subject_addl_t:
@@ -1450,6 +1466,7 @@
   language_facet:
   - Persian
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - P - Language & Literature
   author_t:
@@ -1537,6 +1554,7 @@
   language_facet:
   - Sanskrit
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - U - Military Science
   author_t:
@@ -1627,6 +1645,7 @@
   language_facet:
   - Arabic
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - D - World History
   author_t:
@@ -1695,6 +1714,7 @@
   language_facet:
   - Tibetan
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - subtitle_display: min jald al-dhāt ilá ṣidq al-sharḥ
   author_vern_display: "أبو الخير، علي عبد الحميد"
   subject_addl_t:
@@ -1783,6 +1803,7 @@
   language_facet:
   - Arabic
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - H - Social Sciences
   marc_display: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><collection xmlns=\"http://www.loc.gov/MARC21/slim\"><record><leader>03730cam
@@ -1956,6 +1977,7 @@
   language_facet:
   - Hebrew
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - E - History of the Americas (General)
   author_t:
@@ -2064,6 +2086,7 @@
   subtitle_t:
   - 'a Native American elder has her say : an oral history /'
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - B - Philosophy, Psychology, Religion
   author_t:
@@ -2144,6 +2167,7 @@
   - dam paʼi chos dgoṅs pa gcig paʼi dri ba legs bśad bsu baʼi pho ñaʼi dris lan
     Dgoṅs-gcig smra baʼi mdzes rgyan źes bya ba bźugs so /
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - subtitle_display: a supplication to the noble Lama Mahaguru Padmasambhava
   subject_addl_t:
   - Prayers and devotions
@@ -2249,6 +2273,7 @@
   - English
   - Tibetan
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - B - Philosophy, Psychology, Religion
   author_t:
@@ -2329,6 +2354,7 @@
   - goṅ sa skyabs mgon chen po mchog nas deṅ dus Bod rigs na gźon rnams la naṅ
     chos ṅo sprod bstsal ba bźugs so.
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - lc_1letter_facet:
   - D - World History
   author_t:
@@ -2406,6 +2432,7 @@
   language_facet:
   - Tibetan
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - marc_display: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><collection xmlns=\"http://www.loc.gov/MARC21/slim\"><record><leader>01127cam
     a22002895a 4500</leader><controlfield tag=\"001\">  2008308478</controlfield><controlfield
     tag=\"003\">DLC</controlfield><controlfield tag=\"005\">20090123131001.0</controlfield><controlfield
@@ -2481,6 +2508,7 @@
   language_facet:
   - Tibetan
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - author_vern_display: "吉田一, 1934-"
   subject_addl_t:
   - 20th century History and criticism
@@ -2586,6 +2614,7 @@
   language_facet:
   - Japanese
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
 - author_vern_display: "林行止"
   subject_addl_t:
   - 1990-
@@ -2690,3 +2719,4 @@
   language_facet:
   - Chinese
   timestamp: '2014-02-03T18:42:53.056Z'
+  record_creation_dt: '2014-02-03T18:42:53.056Z'
