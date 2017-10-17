@@ -54,4 +54,27 @@ describe 'OIA-PMH ListIdentifiers Request' do
       expect(xml.at_xpath('//xmlns:resumptionToken')).to be_nil
     end
   end
+
+  context 'with different timestamp_field' do
+    before :all do
+      SolrDocument.timestamp_key = "record_creation_dt"
+    end
+
+    before :each do
+      get '/catalog/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&from=2015-01-01'
+    end
+
+    after :all do
+      SolrDocument.timestamp_key = "timestamp"
+    end
+
+    it 'returns correct document' do
+      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to eql 1
+      expect(xml.at_xpath('//xmlns:ListIdentifiers/xmlns:header/xmlns:identifier').text).to eql 'test/78908283'
+    end
+
+    it 'document displays correct timestamp' do
+      expect(xml.at_xpath('//xmlns:ListIdentifiers/xmlns:header/xmlns:datestamp').text).to eql '2015-02-03T18:42:53Z'
+    end
+  end
 end

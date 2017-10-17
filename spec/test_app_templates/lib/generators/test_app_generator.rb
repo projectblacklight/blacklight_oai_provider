@@ -68,7 +68,7 @@ class TestAppGenerator < Rails::Generators::Base
         :sample_id => '109660'
       },
       :document => {
-        :timestamp => 'timestamp',
+        :model => SolrDocument,
         :limit => 25
       }
     }

@@ -26,7 +26,7 @@ describe CatalogController do
           :deletion_support => "persistent",
           :sample_id => "109660"
         },
-        :document => { :timestamp => "timestamp", :limit => 25 }
+        :document => { :model => SolrDocument, :limit => 25 }
       )
     end
   end
