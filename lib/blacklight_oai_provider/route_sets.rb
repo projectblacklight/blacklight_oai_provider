@@ -1,9 +1,9 @@
 module BlacklightOaiProvider
-
   module RouteSets
     protected
+
     def catalog
-      add_routes do |options|
+      add_routes do
         get 'catalog/oai' => 'catalog#oai', :as => 'oai_provider'
       end
 
@@ -11,4 +11,3 @@ module BlacklightOaiProvider
     end
   end
 end
-

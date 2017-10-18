@@ -4,7 +4,6 @@ module BlacklightOaiProvider
       @version ||= File.read(File.join(File.dirname(__FILE__), '..', '..', 'VERSION')).chomp
     end
 
-    VERSION = self.version
+    VERSION = version
   end
 end
-

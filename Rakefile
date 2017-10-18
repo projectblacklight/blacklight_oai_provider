@@ -9,7 +9,7 @@ require 'solr_wrapper'
 
 EngineCart.fingerprint_proc = EngineCart.rails_fingerprint_proc
 
-task :default => :ci
+task default: :ci
 
 desc "Run specs"
 RSpec::Core::RakeTask.new
@@ -17,7 +17,7 @@ RSpec::Core::RakeTask.new
 desc 'Run test suite'
 task ci: ['engine_cart:generate'] do
   SolrWrapper.wrap do |solr|
-    solr.with_collection(name: 'blacklight-core', dir: File.join(File.expand_path(File.dirname(__FILE__)), "solr", "conf")) do
+    solr.with_collection(name: 'blacklight-core', dir: File.join(File.expand_path(__dir__), "solr", "conf")) do
       within_test_app do
         system "RAILS_ENV=test rake blacklight_oai_provider:index:seed"
       end

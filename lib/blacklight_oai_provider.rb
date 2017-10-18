@@ -1,5 +1,5 @@
 module BlacklightOaiProvider
-  autoload :Exceptions,  'blacklight_oai_provider/exceptions'
+  autoload :Exceptions, 'blacklight_oai_provider/exceptions'
   autoload :SolrDocumentProvider, 'blacklight_oai_provider/solr_document_provider'
   autoload :SolrDocumentWrapper, 'blacklight_oai_provider/solr_document_wrapper'
   autoload :ResumptionToken, 'blacklight_oai_provider/resumption_token'
@@ -14,12 +14,13 @@ module BlacklightOaiProvider
     value = Hash.new(true) if value == true
     @omit_inject = value
   end
-  def self.omit_inject ; @omit_inject ; end
+
+  def self.omit_inject
+    @omit_inject
+  end
 
   def self.inject!
-    unless BlacklightOaiProvider.omit_inject[:routes]
-      Blacklight::Routes.send(:include, BlacklightOaiProvider::RouteSets)
-    end
+    Blacklight::Routes.send(:include, BlacklightOaiProvider::RouteSets) unless BlacklightOaiProvider.omit_inject[:routes]
   end
 
   # Add element to array only if it's not already there

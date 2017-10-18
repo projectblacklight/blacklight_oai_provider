@@ -1,4 +1,3 @@
- # -*- coding: utf-8 -*-
 require File.join(File.dirname(__FILE__), "lib/blacklight_oai_provider/version")
 
 Gem::Specification.new do |s|
