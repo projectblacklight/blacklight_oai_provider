@@ -57,13 +57,13 @@ describe 'OIA-PMH ListRecords Request' do
     end
   end
 
-  context 'with resumption_token' do
+  context 'with resumption_token with date filter' do
     before :example do
-      get '/catalog/oai?verb=ListRecords&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-02-03T18:42:53Z).t(30):25'
+      get '/catalog/oai?verb=ListRecords&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-02-03T18:42:53Z).t(29):25'
     end
 
-    it 'returns 5 records' do
-      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to eql 5
+    it 'returns 4 records' do
+      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to eql 4
     end
 
     it 'first record has oai_dc metadata element' do
@@ -86,6 +86,12 @@ describe 'OIA-PMH ListRecords Request' do
 
     it 'does not contain a resumptionToken' do
       expect(xml.at_xpath('//xmlns:resumptionToken')).to be_nil
+    end
+  end
+
+  context 'for all document until a specified time' do
+    before :example do
+      get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&until=2014-02-03T18:42:53Z'
     end
   end
 

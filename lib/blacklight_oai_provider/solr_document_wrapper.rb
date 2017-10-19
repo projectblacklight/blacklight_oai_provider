@@ -59,7 +59,7 @@ module BlacklightOaiProvider
     end
 
     def token_conditions(token)
-      base_conditions.merge(start: token.last)
+      conditions(token.to_conditions_hash).merge(start: token.last)
     end
 
     def conditions(options) # conditions/query derived from options

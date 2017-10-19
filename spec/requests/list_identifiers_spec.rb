@@ -24,7 +24,7 @@ describe 'OIA-PMH ListIdentifiers Request' do
 
   context 'with resumption_token' do
     before :example do
-      get '/catalog/oai?verb=ListIdentifiers&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-02-03T18:42:53Z).t(30):25'
+      get '/catalog/oai?verb=ListIdentifiers&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z).t(30):25'
     end
 
     it 'returns 5 records' do
