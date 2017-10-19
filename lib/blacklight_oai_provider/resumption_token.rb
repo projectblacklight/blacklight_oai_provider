@@ -14,9 +14,9 @@ module BlacklightOaiProvider
         when /^s/
           options[:set] = part.sub(/^s\(/, '').sub(/\)$/, '')
         when /^f/
-          options[:from] = Time.zone.parse(part.sub(/^f\(/, '').sub(/\)$/, '')).utc
+          options[:from] = parse_date(part.sub(/^f\(/, '').sub(/\)$/, ''))
         when /^u/
-          options[:until] = Time.zone.parse(part.sub(/^u\(/, '').sub(/\)$/, '')).utc
+          options[:until] = parse_date(part.sub(/^u\(/, '').sub(/\)$/, ''))
         when /^t/
           total = part.sub(/^t\(/, '').sub(/\)$/, '').to_i
         end
@@ -24,6 +24,12 @@ module BlacklightOaiProvider
       new(options, nil, total)
     rescue StandardError
       raise OAI::ResumptionTokenException
+    end
+
+    # Force date to be in UTC. If date does not have a timezone UTC is assumed.
+    # If date is a different timezone it is converted to UTC.
+    def self.parse_date(str)
+      ActiveSupport::TimeZone.new('UTC').parse(str)
     end
 
     def encode_conditions

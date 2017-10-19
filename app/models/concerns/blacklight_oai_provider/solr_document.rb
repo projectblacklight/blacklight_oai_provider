@@ -5,7 +5,7 @@ module BlacklightOaiProvider
     def timestamp
       timestamp = get(self.class.timestamp_key)
       raise BlacklightOaiProvider::Exceptions::MissingTimestamp if timestamp.blank?
-      Time.zone.parse(timestamp) # Will default to application timezone, if timezone not provided in timestamp.
+      Time.zone.parse(timestamp) # Solr timestamps are all in UTC.
     end
 
     def to_oai_dc

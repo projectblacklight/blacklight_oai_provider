@@ -74,7 +74,7 @@ module BlacklightOaiProvider
 
     def solr_date(time)
       if time.respond_to?(:xmlschema)
-        time.xmlschema
+        time.utc.xmlschema # Force UTC.
       elsif time.blank?
         '*'
       else
