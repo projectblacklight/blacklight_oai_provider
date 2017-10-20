@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'solr_wrapper'
   s.add_development_dependency 'engine_cart'
+  s.add_development_dependency "chromedriver-helper"
+  s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency 'byebug'
   s.add_development_dependency 'rubocop', '~> 0.50.0'
   s.add_development_dependency "rubocop-rspec", '~> 1.8.0'
