@@ -25,7 +25,7 @@ A properly configured documentHandler in the blacklight/solr configuration.
 Add
 
 ```ruby
-    gem 'blacklight_oai_provider', '~> 4.1'
+    gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider', branch: 'v4.1'
 ```
 
 to your Gemfile and run `bundle install`.
