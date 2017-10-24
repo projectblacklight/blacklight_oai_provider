@@ -3,12 +3,12 @@ module BlacklightOaiProvider
     extend ActiveSupport::Concern
 
     included do |klass|
-      klass.default_route_sets.insert(klass.default_route_sets.index(:catalog), :oai_routing)
+      klass.default_route_sets.insert(klass.default_route_sets.index(:export), :oai_routing)
     end
 
-    def oai_routing
+    def oai_routing(primary_resource)
       add_routes do
-        get "catalog/oai", to: "catalog#oai", as: 'oai_provider'
+        get "#{primary_resource}/oai", to: "#{primary_resource}#oai", as: 'oai_provider'
       end
     end
   end
