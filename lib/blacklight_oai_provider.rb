@@ -3,7 +3,7 @@ module BlacklightOaiProvider
   autoload :SolrDocumentProvider, 'blacklight_oai_provider/solr_document_provider'
   autoload :SolrDocumentWrapper, 'blacklight_oai_provider/solr_document_wrapper'
   autoload :ResumptionToken, 'blacklight_oai_provider/resumption_token'
-  autoload :RouteSets, 'blacklight_oai_provider/route_sets'
+  autoload :Routes, 'blacklight_oai_provider/routes'
 
   require 'oai'
   require 'blacklight_oai_provider/version'
@@ -20,7 +20,7 @@ module BlacklightOaiProvider
   end
 
   def self.inject!
-    Blacklight::Routes.send(:include, BlacklightOaiProvider::RouteSets) unless BlacklightOaiProvider.omit_inject[:routes]
+    Blacklight::Routes.send(:include, BlacklightOaiProvider::Routes) unless BlacklightOaiProvider.omit_inject[:routes]
   end
 
   # Add element to array only if it's not already there
