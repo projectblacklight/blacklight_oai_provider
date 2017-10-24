@@ -22,7 +22,7 @@ BlacklightOaiProvider v4.1 implements configuration changes. Please visit README
   s.require_paths = ["lib"]
 
   s.add_dependency "rails", "~> 4.0"
-  s.add_dependency "blacklight", "~> 4.0"
+  s.add_dependency "blacklight", "~> 5.0"
   s.add_dependency "oai"
   s.add_development_dependency 'rspec-rails', "~> 3.0"
   s.add_development_dependency 'capybara'
