@@ -10,7 +10,7 @@ describe 'OIA-PMH GetRecord Request' do
     }
   end
 
-  before :example do
+  before do
     get '/catalog/oai?verb=GetRecord&identifier=2007020969&metadataPrefix=oai_dc'
   end
 
@@ -24,12 +24,12 @@ describe 'OIA-PMH GetRecord Request' do
   end
 
   it 'contains date' do
-     expect(xml.at_xpath('//xmlns:metadata/oai_dc:dc/dc:date', namespaces).text).to eql '2008'
+    expect(xml.at_xpath('//xmlns:metadata/oai_dc:dc/dc:date', namespaces).text).to eql '2008'
   end
 
   it 'contains subjects' do
     nodes = xml.xpath('//xmlns:metadata/oai_dc:dc/dc:subject', namespaces)
-    expect(nodes.count).to eql 4
+    expect(nodes.count).to be 4
     expect(nodes.map(&:text)).to match_array ['Strong Medicine, 1922-', 'Delaware women', 'Indian women shamans', 'Delaware Indians']
   end
 

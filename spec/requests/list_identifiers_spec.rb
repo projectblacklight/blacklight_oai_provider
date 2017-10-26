@@ -4,12 +4,12 @@ describe 'OIA-PMH ListIdentifiers Request' do
   let(:xml) { Nokogiri::XML(response.body) }
 
   context 'for all documents' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListIdentifiers&metadataPrefix=oai_dc'
     end
 
     it 'returns 25 records' do
-      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to eql 25
+      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to be 25
     end
 
     it 'first record has identifier and timestamp' do
@@ -23,12 +23,12 @@ describe 'OIA-PMH ListIdentifiers Request' do
   end
 
   context 'with resumption_token' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListIdentifiers&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z).t(30):25'
     end
 
     it 'returns 5 records' do
-      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to eql 5
+      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to be 5
     end
 
     it 'first record has identifier and timestamp' do
@@ -42,12 +42,12 @@ describe 'OIA-PMH ListIdentifiers Request' do
   end
 
   context 'for all documents within a time range' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&from=2014-03-03&until=2014-04-03'
     end
 
     it 'returns 1 record' do
-      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to eql 1
+      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to be 1
     end
 
     it 'does not contain a resumptionToken' do
@@ -60,7 +60,7 @@ describe 'OIA-PMH ListIdentifiers Request' do
       SolrDocument.timestamp_key = "record_creation_dt"
     end
 
-    before :each do
+    before do
       get '/catalog/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&from=2015-01-01'
     end
 
@@ -69,7 +69,7 @@ describe 'OIA-PMH ListIdentifiers Request' do
     end
 
     it 'returns correct document' do
-      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to eql 1
+      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to be 1
       expect(xml.at_xpath('//xmlns:ListIdentifiers/xmlns:header/xmlns:identifier').text).to eql 'test/78908283'
     end
 

@@ -41,23 +41,23 @@ class TestAppGenerator < Rails::Generators::Base
   def add_test_blacklight_oai_config
     say_status("warning", "ADDING BL OIA-PMH CONFIG")
 
-    insert_into_file "app/controllers/catalog_controller.rb", :after => "    config.default_solr_params = { \n" do
+    insert_into_file "app/controllers/catalog_controller.rb", after: "    config.default_solr_params = { \n" do
       "      :fl => '*',\n"
     end
 
-    insert_into_file "app/controllers/catalog_controller.rb", :after => "  configure_blacklight do |config|\n" do
-%{
+    insert_into_file "app/controllers/catalog_controller.rb", after: "  configure_blacklight do |config|\n" do
+      <<-CONFIG
     config.default_document_solr_params = {
-          :qt => 'search',
-          :fl => '*',
-          :rows => 1,
-          :q => '{!raw f=id v=$id}'
+      :qt => 'search',
+      :fl => '*',
+      :rows => 1,
+      :q => '{!raw f=id v=$id}'
     }
-}
+      CONFIG
     end
 
-    insert_into_file "app/controllers/catalog_controller.rb", :after => "configure_blacklight do |config|\n" do
-%{
+    insert_into_file "app/controllers/catalog_controller.rb", after: "configure_blacklight do |config|\n" do
+      <<-CONFIG
     config.oai = {
       :provider => {
         :repository_name => 'Test Repository',
@@ -72,15 +72,15 @@ class TestAppGenerator < Rails::Generators::Base
         :limit => 25
       }
     }
-}
+      CONFIG
     end
 
-    insert_into_file "app/models/solr_document.rb", :after => "  field_semantics.merge!(    \n" do
-%{
+    insert_into_file "app/models/solr_document.rb", after: "  field_semantics.merge!(    \n" do
+      <<-CONFIG
     :creator => "author_display",
     :date => "pub_date",
     :subject => "subject_topic_facet",
-}
+      CONFIG
     end
   end
 end

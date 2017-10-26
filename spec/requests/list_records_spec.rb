@@ -11,12 +11,12 @@ describe 'OIA-PMH ListRecords Request' do
   end
 
   context 'for all documents' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc'
     end
 
     it 'returns 25 records' do
-      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to eql 25
+      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to be 25
     end
 
     it 'first record has oai_dc metadata element' do
@@ -28,12 +28,12 @@ describe 'OIA-PMH ListRecords Request' do
     end
 
     context 'metadata element' do
-      let(:metadata_node) {
+      let(:metadata_node) do
         xml.xpath(
           '//xmlns:ListRecords/xmlns:record/xmlns:header/xmlns:identifier[text()="test/2007020969"]/parent::*/parent::*/xmlns:metadata/oai_dc:dc',
           namespaces
         )
-      }
+      end
 
       it 'contains title' do
         expect(metadata_node.at_xpath('dc:title', namespaces).text).to eql '"Strong Medicine speaks"'
@@ -58,12 +58,12 @@ describe 'OIA-PMH ListRecords Request' do
   end
 
   context 'with resumption_token with date filter' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListRecords&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-02-03T18:42:53Z).t(29):25'
     end
 
     it 'returns 4 records' do
-      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to eql 4
+      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to be 4
     end
 
     it 'first record has oai_dc metadata element' do
@@ -76,12 +76,12 @@ describe 'OIA-PMH ListRecords Request' do
   end
 
   context 'for all documents within a time range' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2014-03-03&until=2014-04-03'
     end
 
     it 'returns 1 record' do
-      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to eql 1
+      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to be 1
     end
 
     it 'does not contain a resumptionToken' do
@@ -90,13 +90,13 @@ describe 'OIA-PMH ListRecords Request' do
   end
 
   context 'for all document until a specified time' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&until=2014-02-03T18:42:53Z'
     end
   end
 
   context 'throws noRecordsMatch error' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2015-01-01'
     end
 

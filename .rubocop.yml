@@ -6,7 +6,6 @@ inherit_from:
 AllCops:
   DisplayCopNames: true
   Exclude:
-  - "spec/**/*"
   - "blacklight_oai_provider.gemspec"
 
 Rails:
@@ -14,6 +13,7 @@ Rails:
 
 Metrics/BlockLength:
   Exclude:
+    - 'spec/**/*'
     - "lib/railties/blacklight_oai_provider.rake"
 
 Metrics/LineLength:

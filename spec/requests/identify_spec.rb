@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'OIA-PMH Identify Request' do
   let(:xml) { Nokogiri::XML(response.body) }
 
-  before :example do
+  before do
     get '/catalog/oai?verb=Identify'
   end
 

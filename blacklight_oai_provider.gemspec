@@ -27,5 +27,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency 'byebug'
   s.add_development_dependency 'rubocop', '~> 0.50.0'
-  s.add_development_dependency "rubocop-rspec", '~> 1.8.0'
+  s.add_development_dependency "rubocop-rspec", '~> 1.18.0'
 end

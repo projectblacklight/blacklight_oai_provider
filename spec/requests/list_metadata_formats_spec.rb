@@ -4,7 +4,7 @@ describe 'OIA-PMH ListMetadataFormats Request' do
   let(:xml) { Nokogiri::XML(response.body) }
 
   context 'without identifier parameter' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListMetadataFormats'
     end
 
@@ -23,7 +23,7 @@ describe 'OIA-PMH ListMetadataFormats Request' do
   end
 
   context 'with identifier parameter' do
-    before :example do
+    before do
       get '/catalog/oai?verb=ListMetadataFormats&identifier=2007020969'
     end
 
