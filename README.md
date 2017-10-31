@@ -2,21 +2,21 @@
 OAI-PMH service endpoint for Blacklight applications
 
 ## Description
-The BlacklightOaiProvider plugin provides an [Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH)](http://www.openarchives.org/pmh/) data provider endpoint, using the [ruby-oai gem](https://github.com/code4lib/ruby-oai), that let service providers harvest that metadata.
+The BlacklightOaiProvider plugin provides an [Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH)](http://www.openarchives.org/pmh/) data provider endpoint, using the [ruby-oai gem](https://github.com/code4lib/ruby-oai). This endpoint enables service providers harvest a data provider's metadata.
 
 ### Versioning
 Starting `v4.1` major plugin versions are synced with major Blacklight versions. The last known version to work with Blacklight 3.x/Rails 3.x is `v0.1.0`.
 
-A few maintenance branches have been left in place in case there is interest to add support for older versions of rails/blacklight:
+A few maintenance branches have been left in place in case there is interest to add support for older versions of Rails/Blacklight:
 
 `v3.x` -> Support for Blacklight 3.0
 
 `v4.x` -> Support for Blacklight 4.0 and Rails 3.0
 
 ## Requirements
-A Rails app running Blacklight 4.x and Rails 4.x.
+A Rails app running Rails 4.x and Blacklight 4.x.
 
-OAI-PMH requires a timestamp field for all records, so your Solr index should include an appropriate field. This field should be able to support date range queries. By default, the name of this field is `timestamp` (more on how to configure this below).
+OAI-PMH requires a timestamp field for all records. The Solr index should include an appropriate field. This field should be able to support date range queries. By default, the name of this field is `timestamp` (more on how to configure this below).
 
 A properly configured documentHandler in the blacklight/solr configuration.
 
@@ -25,14 +25,14 @@ A properly configured documentHandler in the blacklight/solr configuration.
 Add
 
 ```ruby
-    gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider', branch: 'v4.1'
+    gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider', tag: 'v4.1.0.pre1'
 ```
 
 to your Gemfile and run `bundle install`.
 
 Then run
 ```ruby
-rails generate blacklight_oai_provider:install
+    rails generate blacklight_oai_provider:install
 ```
 to install the appropriate extensions into your `CatalogController` and `SolrDocument` classes. If you want to do customize the way this installs, instead you may:
 
@@ -85,9 +85,9 @@ To change the name of the timestamp solr field in your `SolrDocument` model chan
     self.timestamp_key = 'record_creation_date' # Default: 'timestamp'
 ```
 
-The metadata displayed in the xml serialization of each record is based off the `field_semantics` hash in the `SolrDocument`. To update/change these fields add something like the following to your model:
+The metadata displayed in the xml serialization of each record is based off the `field_semantics` hash in the `SolrDocument` model. To update/change these fields add something like the following to your model:
 
-```ruby
+```ruby  
   field_semantics.merge!(
     creator: "author_display",
     date: "pub_date",
@@ -106,7 +106,7 @@ The fields used by the dublin core serialization are:
 ## Injection
 This plugin assumes it is in a Blacklight Rails app, uses Blacklight methods, Rails methods, and standard ruby module includes to inject it's behaviors into the app.  
 
-You can turn off this injection if you like, although it will make the plugin less (or non-) functional unless you manually do similar injection. See lib/blacklight_oai_provider.rb#inject! to see exactly what's going on.
+You can turn off this injection if you like, although it will make the plugin less (or non-) functional unless you manually do similar injection. See `lib/blacklight_oai_provider.rb#inject!` to see exactly what's going on.
 
 In any initializer, you can set:
 ```ruby
