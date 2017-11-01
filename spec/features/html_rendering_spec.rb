@@ -14,7 +14,7 @@ describe 'HTML page rendering', js: true do
 
   it "lists records" do
     visit '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc'
-    expect(page).to have_content('OAI Record: test/00282214')
+    expect(page).to have_content('OAI Record: oai:test:00282214')
   end
 
   it "document page" do

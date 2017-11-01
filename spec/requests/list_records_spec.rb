@@ -30,7 +30,7 @@ describe 'OIA-PMH ListRecords Request' do
     context 'metadata element' do
       let(:metadata_node) do
         xml.xpath(
-          '//xmlns:ListRecords/xmlns:record/xmlns:header/xmlns:identifier[text()="test/2007020969"]/parent::*/parent::*/xmlns:metadata/oai_dc:dc',
+          '//xmlns:ListRecords/xmlns:record/xmlns:header/xmlns:identifier[text()="oai:test:2007020969"]/parent::*/parent::*/xmlns:metadata/oai_dc:dc',
           namespaces
         )
       end
@@ -51,7 +51,7 @@ describe 'OIA-PMH ListRecords Request' do
         expect(metadata_node.at_xpath('dc:language', namespaces).text).to eql 'English'
       end
 
-      it 'contains identifier' do
+      it 'contains format' do
         expect(metadata_node.at_xpath('dc:format', namespaces).text).to eql 'Book'
       end
     end

@@ -70,7 +70,7 @@ describe 'OIA-PMH ListIdentifiers Request' do
 
     it 'returns correct document' do
       expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to be 1
-      expect(xml.at_xpath('//xmlns:ListIdentifiers/xmlns:header/xmlns:identifier').text).to eql 'test/78908283'
+      expect(xml.at_xpath('//xmlns:ListIdentifiers/xmlns:header/xmlns:identifier').text).to eql 'oai:test:78908283'
     end
 
     it 'document displays correct timestamp' do

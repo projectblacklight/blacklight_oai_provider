@@ -62,7 +62,7 @@ class TestAppGenerator < Rails::Generators::Base
       :provider => {
         :repository_name => 'Test Repository',
         :repository_url => 'http://localhost',
-        :record_prefix => 'test',
+        :record_prefix => 'oai:test',
         :admin_email => 'root@localhost',
         :deletion_support => 'persistent',
         :sample_id => '109660'

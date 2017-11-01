@@ -15,7 +15,7 @@ describe 'OIA-PMH GetRecord Request' do
   end
 
   it 'contains header information' do
-    expect(xml.at_xpath('//xmlns:GetRecord/xmlns:record/xmlns:header/xmlns:identifier').text).to eql 'test/2007020969'
+    expect(xml.at_xpath('//xmlns:GetRecord/xmlns:record/xmlns:header/xmlns:identifier').text).to eql 'oai:test:2007020969'
     expect(xml.at_xpath('//xmlns:GetRecord/xmlns:record/xmlns:header/xmlns:datestamp').text).to eql '2014-02-03T18:42:53Z'
   end
 

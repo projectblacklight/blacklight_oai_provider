@@ -39,9 +39,15 @@ describe 'OIA-PMH Identify Request' do
     expect(xml.at_xpath('//xmlns:adminEmail').text).to eql 'root@localhost'
   end
 
+  it "contains repository prefix/identifier" do
+    expect(
+      xml.at_xpath('//oai-identifier:repositoryIdentifier', 'oai-identifier' => "http://www.openarchives.org/OAI/2.0/oai-identifier").text
+    ).to eql 'test'
+  end
+
   it "contains sample identifier" do
     expect(
       xml.at_xpath('//oai-identifier:sampleIdentifier', 'oai-identifier' => "http://www.openarchives.org/OAI/2.0/oai-identifier").text
-    ).to eql 'test:109660'
+    ).to eql 'oai:test:109660'
   end
 end
