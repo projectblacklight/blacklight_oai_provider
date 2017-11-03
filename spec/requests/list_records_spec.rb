@@ -99,7 +99,6 @@ describe 'OIA-PMH ListRecords Request' do
     let(:document_config) { { set_fields: 'language_facet' } }
 
     it 'only records from the set are returned' do
-      pending 'Solr query for sets needs to be corrected.'
       params = { verb: 'ListRecords', metadataPrefix: 'oai_dc', set: 'language_facet:Japanese' }
 
       get oai_provider_path(params)

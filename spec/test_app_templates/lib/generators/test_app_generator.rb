@@ -71,6 +71,7 @@ class TestAppGenerator < Rails::Generators::Base
       },
       :document => {
         :model => SolrDocument,
+        :set_fields => 'language_facet',
         :limit => 25
       }
     }
