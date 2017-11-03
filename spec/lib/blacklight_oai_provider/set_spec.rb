@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe BlacklightOaiProvider::Set do
   let(:controller) { CatalogController.new }
@@ -10,7 +10,7 @@ RSpec.describe BlacklightOaiProvider::Set do
     described_class.fields = fields
   end
 
-  describe '.all', :vcr do
+  describe '.all' do
     it 'returns a Set object representing each set' do
       sets = described_class.all
       expect(sets.count).to be 11

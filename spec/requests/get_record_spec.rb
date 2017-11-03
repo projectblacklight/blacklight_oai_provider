@@ -11,7 +11,7 @@ describe 'OIA-PMH GetRecord Request' do
   end
 
   before do
-    get '/catalog/oai?verb=GetRecord&identifier=2007020969&metadataPrefix=oai_dc'
+    get '/catalog/oai?verb=GetRecord&identifier=oai:test:2007020969&metadataPrefix=oai_dc'
   end
 
   it 'contains header information' do

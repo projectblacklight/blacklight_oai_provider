@@ -95,6 +95,18 @@ describe 'OIA-PMH ListRecords Request' do
     end
   end
 
+  context 'for all documents within a set' do
+    let(:document_config) { { set_fields: 'language_facet' } }
+
+    it 'only records from the set are returned' do
+      pending 'Solr query for sets needs to be corrected.'
+      params = { verb: 'ListRecords', metadataPrefix: 'oai_dc', set: 'language_facet:Japanese' }
+
+      get oai_provider_path(params)
+      expect(xml.xpath('//xmlns:record').count).to be 2
+    end
+  end
+
   context 'throws noRecordsMatch error' do
     before do
       get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2015-01-01'
