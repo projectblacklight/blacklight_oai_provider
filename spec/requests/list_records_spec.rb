@@ -99,7 +99,7 @@ describe 'OIA-PMH ListRecords Request' do
     let(:document_config) { { set_fields: 'language_facet' } }
 
     it 'only records from the set are returned' do
-      params = { verb: 'ListRecords', metadataPrefix: 'oai_dc', set: 'language_facet:Japanese' }
+      params = { verb: 'ListRecords', metadataPrefix: 'oai_dc', set: 'language:Japanese' }
 
       get oai_provider_path(params)
       expect(xml.xpath('//xmlns:record').count).to be 2

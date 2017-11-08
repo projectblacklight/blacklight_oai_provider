@@ -10,8 +10,7 @@ module BlacklightOaiProvider
       @limit           = options[:limit] || 15
       @set             = (options[:set_class] || 'BlacklightOaiProvider::Set').constantize
 
-      @set.repository = @controller.repository
-      @set.search_builder = @controller.search_builder
+      @set.controller = @controller
       @set.fields = options[:set_fields]
     end
 
@@ -75,7 +74,7 @@ module BlacklightOaiProvider
         filters << "#{solr_timestamp}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]"
       end
 
-      filters << @set.from_spec(options[:set]) if options[:set]
+      filters << @set.from_spec(options[:set]) unless options[:set].blank?
 
       base_conditions.merge(fq: filters)
     end

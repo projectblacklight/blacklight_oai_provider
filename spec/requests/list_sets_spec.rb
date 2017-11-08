@@ -21,7 +21,7 @@ RSpec.describe 'OAI-PMH ListSets Request' do
   context 'with set configuration' do
     it 'shows all sets' do
       get oai_provider_path(verb: 'ListSets')
-      expect(xml.xpath('//xmlns:set').count).to be 11
+      expect(xml.xpath('//xmlns:set').count).to be 12
     end
 
     it 'shows the correct verb' do

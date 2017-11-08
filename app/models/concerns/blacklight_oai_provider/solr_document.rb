@@ -12,6 +12,10 @@ module BlacklightOaiProvider
       export_as('oai_dc_xml')
     end
 
+    def sets
+      BlacklightOaiProvider::Set.sets_for(self)
+    end
+
     module ClassMethods
       attr_writer :timestamp_key
 

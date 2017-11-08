@@ -3,6 +3,7 @@ require 'spec_helper'
 RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
   let(:options) { {} }
   let(:controller) { CatalogController.new }
+  
   subject { described_class.new(controller, options) }
 
   before do
@@ -11,7 +12,7 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
 
   describe '#initialize' do
     context 'with a set class provided' do
-      let(:options) { { set_class: '::OaiSet', set_fields: 'language_facet' } }
+      let(:options) { { set_class: '::OaiSet', set_fields: [{ solr_field: 'language_facet' }] } }
 
       it 'uses the Set class' do
         pending 'Need to add alternate Set class implementation'

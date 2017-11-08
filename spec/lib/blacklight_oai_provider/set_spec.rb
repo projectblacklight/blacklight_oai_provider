@@ -2,44 +2,54 @@ require 'spec_helper'
 
 RSpec.describe BlacklightOaiProvider::Set do
   let(:controller) { CatalogController.new }
-  let(:fields) { 'language_facet' }
+  let(:fields) do
+    [{ label: 'language', solr_field: 'language_facet' }]
+  end
 
   before do
-    described_class.repository = controller.repository
-    described_class.search_builder = controller.search_builder
+    described_class.controller = controller
     described_class.fields = fields
+    allow(controller).to receive(:params).and_return({})
   end
 
   describe '.all' do
+    subject(:all_sets) { described_class.all }
+
     it 'returns a Set object representing each set' do
-      sets = described_class.all
-      expect(sets.count).to be 11
-      expect(sets.first).to be_a described_class
+      expect(all_sets.count).to be 12
+      expect(all_sets.first).to be_a described_class
     end
 
     context 'with multiple fields' do
-      let(:fields) { %w(language_facet format) }
+      let(:fields) do
+        [
+          { label: 'language', solr_field: 'language_facet' },
+          { solr_field: 'format' }
+        ]
+      end
 
       it 'returns Sets for values in each field' do
-        expect(described_class.all.count).to be 12
+        expect(all_sets.count).to be 13
       end
     end
 
     context 'for a field with no values' do
-      let(:fields) { 'author_display' }
+      let(:fields) do
+        [{ label: 'author', solr_field: 'author_display' }]
+      end
 
       it 'returns nil' do
-        expect(described_class.all).to be_nil
+        expect(all_sets).to be_nil
       end
     end
   end
 
   describe '.from_spec' do
     context 'with a valid spec' do
-      let(:spec) { 'language_facet:Hebrew' }
+      let(:spec) { 'language:Hebrew' }
 
       it 'returns the filter query' do
-        expect(described_class.from_spec(spec)).to eq 'language_facet:Hebrew'
+        expect(described_class.from_spec(spec)).to eq 'language_facet:"Hebrew"'
       end
     end
 
@@ -61,9 +71,14 @@ RSpec.describe BlacklightOaiProvider::Set do
   end
 
   describe '#initialize' do
+    let(:set) { described_class.new('language:Hebrew') }
+
     it 'creates a friendly set name if none is provided' do
-      set = described_class.new('language_facet:Hebrew')
-      expect(set.name).to eq 'Language Facet: Hebrew'
+      expect(set.name).to eq 'Language: Hebrew'
+    end
+
+    it 'gets solr field' do
+      expect(set.solr_field).to eql 'language_facet'
     end
   end
 end
