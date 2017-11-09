@@ -51,4 +51,34 @@ RSpec.describe 'OAI-PMH ListSets Request' do
       ).to eql 'Subject topic set using FAST subjects'
     end
   end
+
+  context 'when custom set model is provided' do
+    let(:custom_set_class) do
+      Class.new(BlacklightOaiProvider::SolrSet) do
+        def description
+          "This is a #{label} set containing records with the value of #{value}."
+        end
+      end
+    end
+
+    before do
+      stub_const 'ChangeDescriptionSet', custom_set_class
+
+      CatalogController.configure_blacklight do |config|
+        config.oai = {
+          document: {
+            set_class: ChangeDescriptionSet,
+            set_fields: [{ solr_field: 'format' }]
+          }
+        }
+      end
+    end
+
+    it "shows correct description" do
+      get oai_provider_path(verb: 'ListSets')
+      expect(
+        xml.at_xpath('//xmlns:set/xmlns:setDescription/oai_dc:dc/dc:description', namespaces).text
+      ).to eql 'This is a format set containing records with the value of Book.'
+    end
+  end
 end

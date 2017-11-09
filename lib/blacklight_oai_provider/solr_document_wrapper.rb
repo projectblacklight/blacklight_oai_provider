@@ -8,7 +8,7 @@ module BlacklightOaiProvider
       @solr_timestamp  = document_model.timestamp_key
       @timestamp_field = 'timestamp' # method name used by ruby-oai
       @limit           = options[:limit] || 15
-      @set             = (options[:set_class] || 'BlacklightOaiProvider::SolrSet').constantize
+      @set             = options[:set_class] || BlacklightOaiProvider::SolrSet
 
       @set.controller = @controller
       @set.fields = options[:set_fields]

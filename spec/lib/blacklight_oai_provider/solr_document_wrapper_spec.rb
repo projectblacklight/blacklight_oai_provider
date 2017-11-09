@@ -12,11 +12,14 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
 
   describe '#initialize' do
     context 'with a set class provided' do
-      let(:options) { { set_class: '::OaiSet', set_fields: [{ solr_field: 'language_facet' }] } }
+      before do
+        stub_const 'CustomSet', Class.new(BlacklightOaiProvider::Set)
+      end
+
+      let(:options) { { set_class: CustomSet, set_fields: [{ solr_field: 'language_facet' }] } }
 
       it 'uses the Set class' do
-        pending 'Need to add alternate Set class implementation'
-        expect(wrapper.sets.first).to be_a ::OaiSet
+        expect(wrapper.instance_eval { @set }).to be CustomSet
       end
     end
   end
