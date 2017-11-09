@@ -8,7 +8,8 @@ module BlacklightOaiProvider
       def all
         return if @fields.nil?
 
-        params = { rows: 0, facet: true, 'facet.limit' => -1, 'facet.field' => solr_fields }
+        params = { rows: 0, facet: true, 'facet.field' => solr_fields }
+        solr_fields.each { |field| params["f.#{field}.facet.limit"] = -1 } # override any potential blacklight limits
         response, _records = @controller.get_search_results(@controller.params, params)
         sets_from_facets(response.facet_fields) if response.facet_fields
       end

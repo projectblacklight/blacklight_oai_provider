@@ -42,6 +42,22 @@ RSpec.describe BlacklightOaiProvider::Set do
         expect(all_sets).to be_nil
       end
     end
+
+    context 'for a field with facet config limit' do
+      let(:fields) do
+        [{ label: 'lc_alpha', solr_field: 'lc_alpha_facet' }]
+      end
+
+      before do
+        CatalogController.configure_blacklight do |config|
+          config.add_facet_field 'lc_alpha_facet', label: 'lc_alpha', limit: 2
+        end
+      end
+
+      it 'returns all sets' do
+        expect(all_sets.count).to be 14
+      end
+    end
   end
 
   describe '.from_spec' do
