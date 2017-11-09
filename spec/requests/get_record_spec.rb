@@ -14,9 +14,16 @@ describe 'OIA-PMH GetRecord Request' do
     get '/catalog/oai?verb=GetRecord&identifier=oai:test:2007020969&metadataPrefix=oai_dc'
   end
 
-  it 'contains header information' do
+  it 'contains identifier' do
     expect(xml.at_xpath('//xmlns:GetRecord/xmlns:record/xmlns:header/xmlns:identifier').text).to eql 'oai:test:2007020969'
+  end
+
+  it 'contains datestamp' do
     expect(xml.at_xpath('//xmlns:GetRecord/xmlns:record/xmlns:header/xmlns:datestamp').text).to eql '2014-02-03T18:42:53Z'
+  end
+
+  it 'contains sets' do
+    expect(xml.at_xpath('//xmlns:GetRecord/xmlns:record/xmlns:header/xmlns:setSpec').text).to eql 'language:English'
   end
 
   it 'contains creator' do

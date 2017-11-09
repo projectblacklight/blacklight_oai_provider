@@ -9,16 +9,32 @@ RSpec.describe 'OAI-PMH ListSets Request' do
       oai_dc: 'http://www.openarchives.org/OAI/2.0/oai_dc/'
     }
   end
+  let(:test_oai_config) { {} }
+  let(:old_config) { CatalogController.new.oai_config }
+
+  before do
+    old_config
+    CatalogController.configure_blacklight do |config|
+      config.oai = test_oai_config
+    end
+  end
+
+  after do
+    CatalogController.configure_blacklight do |config|
+      config.oai = old_config
+    end
+  end
 
   context 'without set configuration' do
     it 'shows that no sets exist' do
-      pending 'Figure out a way to override blacklight configuration'
       get oai_provider_path(verb: 'ListSets')
       expect(xml.xpath('//xmlns:error').text).to eql 'This repository does not support sets.'
     end
   end
 
   context 'with set configuration' do
+    let(:test_oai_config) { old_config }
+
     it 'shows all sets' do
       get oai_provider_path(verb: 'ListSets')
       expect(xml.xpath('//xmlns:set').count).to be 12
@@ -31,17 +47,15 @@ RSpec.describe 'OAI-PMH ListSets Request' do
   end
 
   context 'when set configuration contains description' do
-    before do
-      CatalogController.configure_blacklight do |config|
-        config.oai = {
-          document: {
-            set_fields: [
-              { label: 'subject', solr_field: 'subject_topic_facet',
-                description: "Subject topic set using FAST subjects" }
-            ]
-          }
+    let(:test_oai_config) do
+      {
+        document: {
+          set_fields: [
+            { label: 'subject', solr_field: 'subject_topic_facet',
+              description: "Subject topic set using FAST subjects" }
+          ]
         }
-      end
+      }
     end
 
     it 'shows set description' do
@@ -53,6 +67,16 @@ RSpec.describe 'OAI-PMH ListSets Request' do
   end
 
   context 'when custom set model is provided' do
+    let(:test_oai_config) do
+      stub_const 'ChangeDescriptionSet', custom_set_class
+
+      {
+        document: {
+          set_class: ChangeDescriptionSet,
+          set_fields: [{ solr_field: 'format' }]
+        }
+      }
+    end
     let(:custom_set_class) do
       Class.new(BlacklightOaiProvider::SolrSet) do
         def description
@@ -61,18 +85,9 @@ RSpec.describe 'OAI-PMH ListSets Request' do
       end
     end
 
-    before do
-      stub_const 'ChangeDescriptionSet', custom_set_class
-
-      CatalogController.configure_blacklight do |config|
-        config.oai = {
-          document: {
-            set_class: ChangeDescriptionSet,
-            set_fields: [{ solr_field: 'format' }]
-          }
-        }
-      end
-    end
+    # before do
+    #   stub_const 'ChangeDescriptionSet', custom_set_class
+    # end
 
     it "shows correct description" do
       get oai_provider_path(verb: 'ListSets')
