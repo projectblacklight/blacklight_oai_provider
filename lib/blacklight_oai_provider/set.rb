@@ -40,9 +40,8 @@ module BlacklightOaiProvider
         @fields = value
       end
 
-      def solr_field_for(label)
-        field = Array.wrap(@fields).find { |f| f[:label] == label }
-        field.nil? ? nil : field[:solr_field]
+      def field_config_for(label)
+        Array.wrap(@fields).find { |f| f[:label] == label } || {}
       end
 
       private
@@ -66,10 +65,11 @@ module BlacklightOaiProvider
     attr_accessor :label, :value, :solr_field, :description
 
     # Build a set object with, at minimum, a set spec string
-    def initialize(spec, opts = {})
+    def initialize(spec)
       @label, @value = spec.split(':', 2)
-      @solr_field = self.class.solr_field_for(@label)
-      @description = opts[:description]
+      config = self.class.field_config_for(label)
+      @solr_field = config[:solr_field]
+      @description = config[:description]
       raise OAI::ArgumentException if [@label, @value, @solr_field].any?(&:blank?)
     end
 
