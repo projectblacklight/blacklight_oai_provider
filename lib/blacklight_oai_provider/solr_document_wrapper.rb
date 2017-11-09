@@ -69,12 +69,12 @@ module BlacklightOaiProvider
     end
 
     def conditions(options) # conditions/query derived from options
-      filters = Array.new
-      if !(options[:from].blank? && options[:until].blank?)
+      filters = []
+      if options[:from].present? || options[:until].present?
         filters << "#{solr_timestamp}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]"
       end
 
-      filters << @set.from_spec(options[:set]) unless options[:set].blank?
+      filters << @set.from_spec(options[:set]) if options[:set].present?
 
       base_conditions.merge(fq: filters)
     end
