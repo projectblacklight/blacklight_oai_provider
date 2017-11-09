@@ -37,3 +37,11 @@ Bundler/DuplicatedGem:
 Bundler/OrderedGems:
   Exclude:
   - 'Gemfile'
+
+RSpec/DescribeClass:
+  Exclude:
+  - 'spec/requests/**'
+  - 'spec/features/**'
+
+Style/Documentation:
+  Enabled: false
