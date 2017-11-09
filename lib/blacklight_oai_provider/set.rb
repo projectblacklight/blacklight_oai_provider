@@ -4,85 +4,46 @@ module BlacklightOaiProvider
       # The controller, used to construct solr queries
       attr_accessor :controller
 
-      # Return an array of all sets, or nil if sets are not supported
+      # Solr field configuration for each set
+      # Fields must be indexed
+      attr_accessor :fields
+
+      # Return an array of all SetSpecs, or nil if sets are not supported.
+      # Objects returned must be of a class that inherits from
+      # BlacklightOaiProvider::SetSpecs.
       def all
-        return if @fields.nil?
-
-        params = { rows: 0, facet: true, 'facet.field' => solr_fields }
-        solr_fields.each { |field| params["f.#{field}.facet.limit"] = -1 } # override any potential blacklight limits
-        response, _records = @controller.get_search_results(@controller.params, params)
-        sets_from_facets(response.facet_fields) if response.facet_fields
+        raise NotImplementedError
       end
 
-      # Return a Solr filter query given a set spec
+      # Return a Solr filter query given a set spec. Spec will be a string in
+      # label:value format.
       def from_spec(spec)
-        new(spec).solr_filter
+        raise NotImplementedError
       end
 
-      # Returns array of sets for a solr document, or empty array if none are available.
+      # Returns array of sets for a record, or empty array if none are available.
+      # Objects returned must be of a class that inherits from
+      # BlacklightOaiProvider::SetSpecs.
       def sets_for(record)
-        Array.wrap(@fields).map do |field|
-          values = record.get(field[:solr_field], sep: nil)
-          Array.wrap(values).map do |value|
-            new("#{field[:label]}:#{value}")
-          end
-        end.flatten
-      end
-
-      def fields=(value) # The Solr fields to map to OAI sets. Must be indexed
-        if value.respond_to?(:each)
-          value.each do |config|
-            raise ArgumentException, 'OAI sets must define a solr_field' if config[:solr_field].blank?
-            config[:label] ||= config[:solr_field]
-          end
-        end
-
-        @fields = value
-      end
-
-      def field_config_for(label)
-        Array.wrap(@fields).find { |f| f[:label] == label } || {}
-      end
-
-      private
-
-      def solr_fields
-        @fields.map { |f| f[:solr_field] }
-      end
-
-      def sets_from_facets(facet_results)
-        sets = Array.wrap(@fields).map do |f|
-          facet_results.fetch(f[:solr_field], [])
-                       .each_slice(2)
-                       .map { |t| new("#{f[:label]}:#{t.first}") }
-        end.flatten
-
-        sets.empty? ? nil : sets
+        raise NotImplementedError
       end
     end
 
     # OAI Set properties
-    attr_accessor :label, :value, :solr_field, :description
+    attr_accessor :label, :value, :description
 
     # Build a set object with, at minimum, a set spec string
     def initialize(spec)
       @label, @value = spec.split(':', 2)
-      config = self.class.field_config_for(label)
-      @solr_field = config[:solr_field]
-      @description = config[:description]
-      raise OAI::ArgumentException if [@label, @value, @solr_field].any?(&:blank?)
+      raise OAI::ArgumentException if [@label, @value].any?(&:blank?)
     end
 
-    def name # needs to respond to
-      spec.titleize.gsub(':', ': ')
+    def name
+      raise NotImplementedError
     end
 
-    def spec # needs to respond to
-      "#{@label}:#{@value}"
-    end
-
-    def solr_filter
-      "#{@solr_field}:\"#{@value}\""
+    def spec
+      raise NotImplementedError
     end
   end
 end

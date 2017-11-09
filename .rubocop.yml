@@ -45,3 +45,7 @@ RSpec/DescribeClass:
 
 Style/Documentation:
   Enabled: false
+
+Lint/UnusedMethodArgument:
+  Exclude:
+  - 'lib/blacklight_oai_provider/set.rb'

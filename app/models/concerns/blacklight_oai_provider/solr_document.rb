@@ -13,7 +13,7 @@ module BlacklightOaiProvider
     end
 
     def sets
-      BlacklightOaiProvider::Set.sets_for(self)
+      BlacklightOaiProvider::SolrSet.sets_for(self)
     end
 
     module ClassMethods

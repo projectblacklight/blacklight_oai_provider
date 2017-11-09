@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe BlacklightOaiProvider::Set do
+RSpec.describe BlacklightOaiProvider::SolrSet do
   let(:controller) { CatalogController.new }
   let(:fields) do
     [{ label: 'language', solr_field: 'language_facet' }]
