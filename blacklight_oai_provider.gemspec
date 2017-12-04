@@ -1,14 +1,18 @@
- # -*- coding: utf-8 -*-
 require File.join(File.dirname(__FILE__), "lib/blacklight_oai_provider/version")
 
 Gem::Specification.new do |s|
   s.name = "blacklight_oai_provider"
   s.version = BlacklightOaiProvider::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Chris Beer"]
-  s.email = ["chris@cbeer.info"]
+  s.authors = ["Chris Beer", "Carla Galarza"]
+  s.email = ["chris@cbeer.info", "cmg2228@columbia.edu"]
   s.homepage    = "http://projectblacklight.org/"
   s.summary = "Blacklight Oai Provider plugin"
+
+  s.post_install_message = %q{
+BlacklightOaiProvider v4.1 implements configuration changes. Please visit README for more information.
+
+}
 
   s.rubyforge_project = "blacklight"
 
@@ -17,13 +21,16 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-
-  s.add_dependency "rails", ">= 3.0"
-  s.add_dependency "blacklight", ">= 3.0"
+  s.add_dependency "rails", "~> 4.0"
+  s.add_dependency "blacklight", "~> 4.0"
   s.add_dependency "oai"
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'rspec-rails', "~> 3.0"
   s.add_development_dependency 'capybara'
-  s.add_development_dependency 'vcr'
-  s.add_development_dependency 'fakeweb'
+  s.add_development_dependency 'solr_wrapper'
+  s.add_development_dependency 'engine_cart'
+  s.add_development_dependency "chromedriver-helper"
+  s.add_development_dependency "selenium-webdriver"
+  s.add_development_dependency 'byebug'
+  s.add_development_dependency 'rubocop', '~> 0.50.0'
+  s.add_development_dependency "rubocop-rspec", '~> 1.18.0'
 end
