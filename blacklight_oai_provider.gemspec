@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.name = "blacklight_oai_provider"
   s.version = BlacklightOaiProvider::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Chris Beer"]
-  s.email = ["chris@cbeer.info"]
+  s.authors = ["Chris Beer", "Carla Galarza"]
+  s.email = ["chris@cbeer.info", "cmg2228@columbia.edu"]
   s.homepage    = "http://projectblacklight.org/"
   s.summary = "Blacklight Oai Provider plugin"
 
