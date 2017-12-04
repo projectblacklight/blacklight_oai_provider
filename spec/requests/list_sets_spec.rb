@@ -68,26 +68,22 @@ RSpec.describe 'OAI-PMH ListSets Request' do
 
   context 'when custom set model is provided' do
     let(:test_oai_config) do
-      stub_const 'ChangeDescriptionSet', custom_set_class
+      stub_const 'ChangeDescriptionSet', custom_set_model
 
       {
         document: {
-          set_class: ChangeDescriptionSet,
+          set_model: ChangeDescriptionSet,
           set_fields: [{ solr_field: 'format' }]
         }
       }
     end
-    let(:custom_set_class) do
+    let(:custom_set_model) do
       Class.new(BlacklightOaiProvider::SolrSet) do
         def description
           "This is a #{label} set containing records with the value of #{value}."
         end
       end
     end
-
-    # before do
-    #   stub_const 'ChangeDescriptionSet', custom_set_class
-    # end
 
     it "shows correct description" do
       get oai_provider_path(verb: 'ListSets')

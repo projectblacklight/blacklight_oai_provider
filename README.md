@@ -123,11 +123,11 @@ def sets
 end
 ```
 
-Finally, you can substitute you own Set model using the `set_class` option.
+Finally, you can substitute you own Set model using the `set_model` option.
 ```ruby
 config.oai = {
   document: {
-    set_class: NewListSet,
+    set_model: NewListSet,
     set_fields: [
       { label: 'language', solr_field: 'language_facet' }
     ]

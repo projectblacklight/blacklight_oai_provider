@@ -16,7 +16,7 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
         stub_const 'CustomSet', Class.new(BlacklightOaiProvider::Set)
       end
 
-      let(:options) { { set_class: CustomSet, set_fields: [{ solr_field: 'language_facet' }] } }
+      let(:options) { { set_model: CustomSet, set_fields: [{ solr_field: 'language_facet' }] } }
 
       it 'uses the Set class' do
         expect(wrapper.instance_eval { @set }).to be CustomSet
