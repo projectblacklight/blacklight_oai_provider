@@ -25,7 +25,7 @@ A properly configured documentHandler in the blacklight/solr configuration.
 Add
 
 ```ruby
-    gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider', tag: 'v4.1.0.pre1'
+    gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider'
 ```
 
 to your Gemfile and run `bundle install`.
@@ -87,7 +87,7 @@ To change the name of the timestamp solr field in your `SolrDocument` model chan
 
 The metadata displayed in the xml serialization of each record is based off the `field_semantics` hash in the `SolrDocument` model. To update/change these fields add something like the following to your model:
 
-```ruby  
+```ruby
   field_semantics.merge!(
     creator: "author_display",
     date: "pub_date",
@@ -104,7 +104,7 @@ The fields used by the dublin core serialization are:
 ```
 
 ## Injection
-This plugin assumes it is in a Blacklight Rails app, uses Blacklight methods, Rails methods, and standard ruby module includes to inject it's behaviors into the app.  
+This plugin assumes it is in a Blacklight Rails app, uses Blacklight methods, Rails methods, and standard ruby module includes to inject it's behaviors into the app.
 
 You can turn off this injection if you like, although it will make the plugin less (or non-) functional unless you manually do similar injection. See `lib/blacklight_oai_provider.rb#inject!` to see exactly what's going on.
 
