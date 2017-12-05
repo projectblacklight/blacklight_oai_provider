@@ -21,4 +21,9 @@ describe 'HTML page rendering', js: true do
     visit '/catalog/oai?verb=GetRecord&identifier=00282214&metadataPrefix=oai_dc'
     expect(page).to have_xpath('//td[text()="Title"]/parent::*/td[@class="value"]', text: 'Fikr-i Ayāz')
   end
+
+  it "lists verb on page" do
+    visit '/catalog/oai?verb=Identify'
+    expect(page).to have_content('Request was of type Identify.')
+  end
 end
