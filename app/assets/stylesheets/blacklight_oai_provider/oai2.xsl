@@ -150,9 +150,8 @@ p.intro {
 <xsl:call-template name='xmlstyle' />
 </xsl:template>
 
-<xsl:variable name="identifier" select="substring-before(substring-after(substring-before(substring-after(substring-after(/oai:OAI-PMH/oai:request,'identifier'), '&gt;'),','), '&quot;'), '&quot;')" />
-<xsl:variable name="verb" select="substring-before(substring-after(substring-before(substring-after(substring-after(/oai:OAI-PMH/oai:request,'verb'), '&gt;'),'}'), '&quot;'), '&quot;')" />
-
+<xsl:variable name="identifier" select="/oai:OAI-PMH/oai:request/@identifier" />
+<xsl:variable name="verb" select="/oai:OAI-PMH/oai:request/@verb" />
 
 <xsl:template match="/">
 <html>
