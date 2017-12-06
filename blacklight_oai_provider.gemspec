@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary = "Blacklight Oai Provider plugin"
 
   s.post_install_message = %q{
-BlacklightOaiProvider v4.1 implements configuration changes. Please visit README for more information.
+BlacklightOaiProvider v5.x implements configuration changes. Please visit README for more information.
 
 }
 
