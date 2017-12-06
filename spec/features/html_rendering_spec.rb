@@ -26,4 +26,9 @@ describe 'HTML page rendering', js: true do
     visit '/catalog/oai?verb=Identify'
     expect(page).to have_content('Request was of type Identify.')
   end
+
+  it "lists metadata formats for record" do
+    visit '/catalog/oai?verb=ListMetadataFormats&identifier=00282214'
+    expect(page).to have_content('This is a list of metadata formats available for the record "00282214"')
+  end
 end
