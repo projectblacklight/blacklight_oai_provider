@@ -24,7 +24,7 @@ describe 'OIA-PMH ListMetadataFormats Request' do
 
   context 'with identifier parameter' do
     before do
-      get '/catalog/oai?verb=ListMetadataFormats&identifier=2007020969'
+      get '/catalog/oai?verb=ListMetadataFormats&identifier=oai:test:2007020969'
     end
 
     it 'contains oai_dc schema' do
