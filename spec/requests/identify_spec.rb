@@ -16,7 +16,7 @@ describe 'OIA-PMH Identify Request' do
   end
 
   it "contains base url" do
-    expect(xml.at_xpath('//xmlns:baseURL').text).to eql 'http://localhost'
+    expect(xml.at_xpath('//xmlns:baseURL').text).to eql 'http://localhost/catalog/oai'
   end
 
   it "contains protocol version" do

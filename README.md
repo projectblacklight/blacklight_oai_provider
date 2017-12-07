@@ -25,7 +25,7 @@ A properly configured documentHandler in the blacklight/solr configuration.
 Add
 
 ```ruby
-    gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider'
+    gem 'blacklight_oai_provider'
 ```
 
 to your Gemfile and run `bundle install`.
@@ -60,9 +60,10 @@ configure_blacklight do |config|
   config.oai = {
     provider: {
       repository_name: 'Test',
-      repository_url: 'http://localhost',
-      record_prefix: '',
-      admin_email: 'root@localhost'
+      repository_url: 'http://localhost/catalog/oai',
+      record_prefix: 'oai:test',
+      admin_email: 'root@localhost',
+      sample_id: '109660'
     },
     document: {
       model: SolrDocument, # SolrDocument class being used, default: SolrDocument

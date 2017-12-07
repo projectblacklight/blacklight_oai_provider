@@ -20,7 +20,7 @@ describe CatalogController do
       expect(controller.oai_config).to include(
         provider: {
           repository_name: "Test Repository",
-          repository_url: "http://localhost",
+          repository_url: "http://localhost/catalog/oai",
           record_prefix: "oai:test",
           admin_email: "root@localhost",
           deletion_support: "persistent",
