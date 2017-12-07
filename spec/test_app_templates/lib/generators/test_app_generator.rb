@@ -10,7 +10,7 @@ class TestAppGenerator < Rails::Generators::Base
   def run_blacklight_generator
     say_status("warning", "GENERATING BL", :yellow)
 
-    generate 'blacklight', '--devise'
+    generate 'blacklight:install', '--devise'
   end
 
   # Add favicon.ico to asset path
@@ -26,10 +26,12 @@ class TestAppGenerator < Rails::Generators::Base
 
   # Override solr.yml to match settings needed for solr_wrapper.
   def update_solr_config
-    say_status("warning", "COPYING SOLR.YML", :yellow)
+    [:solr, :blacklight].each do |key|
+      say_status("warning", "COPYING #{key}.YML".upcase, :yellow)
 
-    remove_file "config/solr.yml"
-    copy_file "config/solr.yml", "config/solr.yml"
+      remove_file "config/#{key}.yml"
+      copy_file "config/solr.yml", "config/#{key}.yml"
+    end
   end
 
   def install_engine
@@ -61,7 +63,7 @@ class TestAppGenerator < Rails::Generators::Base
     config.oai = {
       :provider => {
         :repository_name => 'Test Repository',
-        :repository_url => 'http://localhost',
+        :repository_url => 'http://localhost/catalog/oai',
         :record_prefix => 'oai:test',
         :admin_email => 'root@localhost',
         :deletion_support => 'persistent',
@@ -69,17 +71,25 @@ class TestAppGenerator < Rails::Generators::Base
       },
       :document => {
         :model => SolrDocument,
+        :set_fields => [
+          { label: 'language', solr_field: 'language_facet' }
+        ],
         :limit => 25
       }
     }
       CONFIG
     end
 
-    insert_into_file "app/models/solr_document.rb", after: "  field_semantics.merge!(    \n" do
+    insert_into_file "app/models/solr_document.rb", after: "include BlacklightOaiProvider::SolrDocument\n" do
       <<-CONFIG
-    :creator => "author_display",
-    :date => "pub_date",
-    :subject => "subject_topic_facet",
+  field_semantics.merge!(
+    title: "title_display",
+    creator: "author_display",
+    date: "pub_date",
+    subject: "subject_topic_facet",
+    format: "format",
+    language: "language_facet"
+  )
       CONFIG
     end
   end

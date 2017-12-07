@@ -16,18 +16,22 @@ describe CatalogController do
   end
 
   describe '#oai_config' do
-    it 'returns correct configuration' do
-      expect(controller.oai_config).to match(
+    it 'returns correct provider configuration' do
+      expect(controller.oai_config).to include(
         provider: {
           repository_name: "Test Repository",
-          repository_url: "http://localhost",
+          repository_url: "http://localhost/catalog/oai",
           record_prefix: "oai:test",
           admin_email: "root@localhost",
           deletion_support: "persistent",
           sample_id: "109660"
-        },
-        document: { model: SolrDocument, limit: 25 }
+        }
       )
+    end
+
+    it 'return corrext document configuration' do
+      expect(controller.oai_config[:document][:limit]).to be 25
+      expect(controller.oai_config[:document][:model]).to be_a Class
     end
   end
 

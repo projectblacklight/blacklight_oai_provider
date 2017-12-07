@@ -8,9 +8,15 @@ module BlacklightOaiProvider
       @solr_timestamp  = document_model.timestamp_key
       @timestamp_field = 'timestamp' # method name used by ruby-oai
       @limit           = options[:limit] || 15
+      @set             = options[:set_model] || BlacklightOaiProvider::SolrSet
+
+      @set.controller = @controller
+      @set.fields = options[:set_fields]
     end
 
-    def sets; end
+    def sets
+      @set.all
+    end
 
     def earliest
       _response, records = @controller.get_search_results(@controller.params, { fl: solr_timestamp, sort: "#{solr_timestamp} asc", rows: 1 })
@@ -63,13 +69,14 @@ module BlacklightOaiProvider
     end
 
     def conditions(options) # conditions/query derived from options
-      if !(options[:from].blank? && options[:until].blank?)
-        base_conditions.merge(
-          fq: "#{solr_timestamp}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]"
-        )
-      else
-        base_conditions
+      filters = []
+      if options[:from].present? || options[:until].present?
+        filters << "#{solr_timestamp}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]"
       end
+
+      filters << @set.from_spec(options[:set]) if options[:set].present?
+
+      base_conditions.merge(fq: filters)
     end
 
     def solr_date(time)

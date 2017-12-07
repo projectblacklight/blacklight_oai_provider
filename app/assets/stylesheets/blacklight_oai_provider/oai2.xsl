@@ -8,8 +8,8 @@
 
 -->
 
-<!-- 
-  
+<!--
+
 Copyright (c) 2000-2004 University of Southampton, UK. SO17 1BJ.
 
 EPrints 2 is free software; you can redistribute it and/or modify
@@ -28,9 +28,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 -->
 
-   
+
 <!--
-  
+
   All the elements really needed for EPrints are done but if
   you want to use this XSL for other OAI archive you may want
   to make some minor changes or additions.
@@ -46,7 +46,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -->
 <xsl:stylesheet
     version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:oai="http://www.openarchives.org/OAI/2.0/"
 >
 
@@ -72,7 +72,7 @@ td.key {
 .dcdata td.key {
 	background-color: #ffffe0;
 }
-body { 
+body {
 	margin: 1em 2em 1em 2em;
 }
 h1, h2, h3 {
@@ -150,7 +150,8 @@ p.intro {
 <xsl:call-template name='xmlstyle' />
 </xsl:template>
 
-<xsl:variable name='identifier' select="substring-before(concat(substring-after(/oai:OAI-PMH/oai:request,'identifier='),'&amp;'),'&amp;')" />
+<xsl:variable name="identifier" select="/oai:OAI-PMH/oai:request/@identifier" />
+<xsl:variable name="verb" select="/oai:OAI-PMH/oai:request/@verb" />
 
 <xsl:template match="/">
 <html>
@@ -165,15 +166,15 @@ p.intro {
     <xsl:apply-templates select="/oai:OAI-PMH" />
     <xsl:call-template name="quicklinks"/>
     <h2><a name="moreinfo">About the XSLT</a></h2>
-    <p>An XSLT file has converted the <a href="http://www.openarchives.org">OAI-PMH 2.0</a> responses into XHTML which looks nice in a browser which supports XSLT such as Mozilla, Firebird and Internet Explorer. The XSLT file was created by <a href="http://www.ecs.soton.ac.uk/people/cjg">Christopher Gutteridge</a> at the University of Southampton as part of the <a href="http://software.eprints.org">GNU EPrints system</a>, and is freely redistributable under the <a href="http://www.gnu.org">GPL</a>.</p><p>If you want to use the XSL file on your own OAI interface you may but due to the way XSLT works you must install the XSL file on the same server as the OAI script, you can't just link to this copy.</p><p>For more information or to download the XSL file please see the <a href="http://software.eprints.org/xslt.php">OAI to XHTML XSLT homepage</a>.</p>
-
+    <p>An XSLT file has converted the <a href="http://www.openarchives.org">OAI-PMH 2.0</a> responses into XHTML which looks nice in a browser which supports XSLT such as Firefox, Chrome, Safari, and Internet Explorer. The XSLT file was created by <a href="http://www.ecs.soton.ac.uk/people/cjg">Christopher Gutteridge</a> at the University of Southampton as part of the <a href="http://www.eprints.org/uk/index.php/eprints-software/">GNU EPrints system</a>, and is freely redistributable under the <a href="http://www.gnu.org">GPL</a>.</p>
+    <p>For more information or to download the XSL file please see the <a href="http://wiki.eprints.org/w/EPrints_OAI_Stylesheet">OAI to XHTML XSLT homepage</a>.</p>
   </body>
 </html>
 </xsl:template>
 
 <xsl:template name="quicklinks">
     <ul class="quicklinks">
-      <li><a href="?verb=Identify">Identify</a> | </li> 
+      <li><a href="?verb=Identify">Identify</a> | </li>
       <li><a href="?verb=ListRecords&amp;metadataPrefix=oai_dc">ListRecords</a> | </li>
       <li><a href="?verb=ListSets">ListSets</a> | </li>
       <li><a href="?verb=ListMetadataFormats">ListMetadataFormats</a> | </li>
@@ -199,7 +200,7 @@ p.intro {
       </div>
     </xsl:when>
     <xsl:otherwise>
-      <p>Request was of type <xsl:value-of select="oai:request/@verb"/>.</p>
+      <p>Request was of type <xsl:value-of select="$verb"/>.</p>
       <div class="results">
         <xsl:apply-templates select="oai:Identify" />
         <xsl:apply-templates select="oai:GetRecord"/>
@@ -332,7 +333,7 @@ p.intro {
 </xsl:template>
 
 <xsl:template match="fr:baseURL" xmlns:fr="http://www.openarchives.org/OAI/2.0/friends/">
-  <li><xsl:value-of select="."/> 
+  <li><xsl:value-of select="."/>
 <xsl:text> </xsl:text>
 <a class="link" href="{.}?verb=Identify">Identify</a></li>
 </xsl:template>
@@ -433,9 +434,13 @@ p.intro {
 <xsl:template match="oai:set">
   <h2>Set</h2>
   <table class="values">
+    <xsl:apply-templates select="oai:setSpec" />
     <tr><td class="key">setName</td>
     <td class="value"><xsl:value-of select="oai:setName"/></td></tr>
-    <xsl:apply-templates select="oai:setSpec" />
+    <xsl:if test="oai:setDescription">
+      <tr><td class="key">setDescription</td>
+      <td class="value"><xsl:value-of select="oai:setDescription"/></td></tr>
+    </xsl:if>
   </table>
 </xsl:template>
 
@@ -535,7 +540,7 @@ p.intro {
         <tr><td class="key">resumptionToken:</td>
         <td class="value"><xsl:value-of select="."/>
 <xsl:text> </xsl:text>
-<a class="link" href="?verb={/oai:OAI-PMH/oai:request/@verb}&amp;resumptionToken={.}">Resume</a></td></tr>
+<a class="link" href="?verb={$verb}&amp;resumptionToken={.}">Resume</a></td></tr>
       </table>
     </xsl:when>
     <xsl:otherwise>
@@ -663,4 +668,3 @@ p.intro {
 </xsl:template>
 
 </xsl:stylesheet>
-

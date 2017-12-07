@@ -37,3 +37,15 @@ Bundler/DuplicatedGem:
 Bundler/OrderedGems:
   Exclude:
   - 'Gemfile'
+
+RSpec/DescribeClass:
+  Exclude:
+  - 'spec/requests/**'
+  - 'spec/features/**'
+
+Style/Documentation:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  Exclude:
+  - 'lib/blacklight_oai_provider/set.rb'
