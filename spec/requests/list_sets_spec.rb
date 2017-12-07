@@ -40,6 +40,12 @@ RSpec.describe 'OAI-PMH ListSets Request' do
       expect(xml.xpath('//xmlns:set').count).to be 12
     end
 
+    it 'contains english set' do
+      get oai_provider_path(verb: 'ListSets')
+      expect(xml.xpath('//xmlns:set//xmlns:setSpec').map(&:text)).to include 'language:English'
+      expect(xml.xpath('//xmlns:set//xmlns:setName').map(&:text)).to include 'Language: English'
+    end
+
     it 'shows the correct verb' do
       get oai_provider_path(verb: 'ListSets')
       expect(xml.at_xpath('//xmlns:request').attribute('verb').value).to eql 'ListSets'

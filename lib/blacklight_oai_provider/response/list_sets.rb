@@ -9,7 +9,7 @@ module BlacklightOaiProvider
             provider.model.sets.each do |set|
               r.set do
                 r.setSpec set.spec
-                r.setName set.label
+                r.setName set.name
 
                 if set.respond_to?(:description) && set.description
                   r.setDescription do
