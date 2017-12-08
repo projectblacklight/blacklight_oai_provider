@@ -19,32 +19,34 @@ module BlacklightOaiProvider
     end
 
     def earliest
-      _response, records = @controller.get_search_results(@controller.params, { fl: solr_timestamp, sort: "#{solr_timestamp} asc", rows: 1 })
-      records.first.timestamp
+      builder = @controller.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} asc", rows: 1)
+      response = @controller.repository.search(builder)
+      response.documents.first.timestamp
     end
 
     def latest
-      _response, records = @controller.get_search_results(@controller.params, { fl: solr_timestamp, sort: "#{solr_timestamp} desc", rows: 1 })
-      records.first.timestamp
+      builder = @controller.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} desc", rows: 1)
+      response = @controller.repository.search(builder)
+      response.documents.first.timestamp
     end
 
     def find(selector, options = {})
       return next_set(options[:resumption_token]) if options[:resumption_token]
 
       if selector == :all
-        response, records = @controller.get_search_results(@controller.params, conditions(options))
+        response = @controller.repository.search(conditions(options))
 
         if limit && response.total > limit
           return select_partial(BlacklightOaiProvider::ResumptionToken.new(options.merge(last: 0), nil, response.total))
         end
+        response.documents
       else
-        _response, records = @controller.get_solr_response_for_doc_id selector.split('/', 2).last
+        @controller.fetch(selector.split('/', 2).last).first.documents.first
       end
-      records
     end
 
     def select_partial(token)
-      _response, records = @controller.get_search_results(@controller.params, token_conditions(token))
+      records = @controller.repository.search(token_conditions(token)).documents
 
       raise ::OAI::ResumptionTokenException unless records
 
@@ -60,23 +62,21 @@ module BlacklightOaiProvider
 
     private
 
-    def base_conditions
-      { sort: "#{solr_timestamp} asc", rows: limit }
-    end
-
     def token_conditions(token)
       conditions(token.to_conditions_hash).merge(start: token.last)
     end
 
     def conditions(options) # conditions/query derived from options
-      filters = []
+      query = @controller.search_builder.merge(sort: "#{solr_timestamp} asc", rows: limit).query
+
       if options[:from].present? || options[:until].present?
-        filters << "#{solr_timestamp}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]"
+        query.append_filter_query(
+          "#{solr_timestamp}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]"
+        )
       end
 
-      filters << @set.from_spec(options[:set]) if options[:set].present?
-
-      base_conditions.merge(fq: filters)
+      query.append_filter_query(@set.from_spec(options[:set])) if options[:set].present?
+      query
     end
 
     def solr_date(time)
