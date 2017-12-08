@@ -19,8 +19,7 @@ module BlacklightOaiProvider
       # Returns array of sets for a solr document, or empty array if none are available.
       def sets_for(record)
         Array.wrap(@fields).map do |field|
-          values = record.get(field[:solr_field], sep: nil)
-          Array.wrap(values).map do |value|
+          record.fetch(field[:solr_field], []).map do |value|
             new("#{field[:label]}:#{value}")
           end
         end.flatten

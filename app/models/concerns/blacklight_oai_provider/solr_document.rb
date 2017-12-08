@@ -3,7 +3,7 @@ module BlacklightOaiProvider
     extend ActiveSupport::Concern
 
     def timestamp
-      timestamp = get(self.class.timestamp_key)
+      timestamp = fetch(self.class.timestamp_key, nil)
       raise BlacklightOaiProvider::Exceptions::MissingTimestamp if timestamp.blank?
       Time.zone.parse(timestamp) # Solr timestamps are all in UTC.
     end
