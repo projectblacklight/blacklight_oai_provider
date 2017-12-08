@@ -27,7 +27,13 @@ describe 'OIA-PMH ListRecords Request' do
       expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql 'oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z).t(30):25'
     end
 
-    context 'metadata element' do
+    context 'for record' do
+      let(:header_node) do
+        xml.xpath(
+          '//xmlns:ListRecords/xmlns:record/xmlns:header/xmlns:identifier[text()="oai:test:2007020969"]/parent::*',
+          namespaces
+        )
+      end
       let(:metadata_node) do
         xml.xpath(
           '//xmlns:ListRecords/xmlns:record/xmlns:header/xmlns:identifier[text()="oai:test:2007020969"]/parent::*/parent::*/xmlns:metadata/oai_dc:dc',
@@ -53,6 +59,11 @@ describe 'OIA-PMH ListRecords Request' do
 
       it 'contains format' do
         expect(metadata_node.at_xpath('dc:format', namespaces).text).to eql 'Book'
+      end
+
+      it 'contains set' do
+        expect(header_node.xpath('xmlns:setSpec').count).to be 1
+        expect(header_node.at_xpath('xmlns:setSpec').text).to eql 'language:English'
       end
     end
   end
