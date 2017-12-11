@@ -12,20 +12,6 @@ module BlacklightOaiProvider
   require 'blacklight_oai_provider/version'
   require 'blacklight_oai_provider/engine'
 
-  @omit_inject = {}
-  def self.omit_inject=(value)
-    value = Hash.new(true) if value == true
-    @omit_inject = value
-  end
-
-  def self.omit_inject
-    @omit_inject
-  end
-
-  def self.inject!
-    Blacklight::Routes.send(:include, BlacklightOaiProvider::Routes) unless BlacklightOaiProvider.omit_inject[:routes]
-  end
-
   # Add element to array only if it's not already there
   def self.safe_arr_add(array, element)
     array << element unless array.include?(element)
