@@ -34,15 +34,24 @@ Then run
 ```ruby
 rails generate blacklight_oai_provider:install
 ```
-to install the appropriate extensions into your `CatalogController` and `SolrDocument` classes. If you want to do customize the way this installs, instead you may:
+to install the appropriate extensions into your `CatalogController` class, `SolrDocument` class, and routes file. If you want to do customize the way this installs, instead you may:
 
-- add this to your Solr Document model:
+- add this to the SolrDocument model:
 ```ruby
 include BlacklightOaiProvider::SolrDocument
 ```
-- add this to your Controller:
+- add this to the Controller:
 ```ruby
 include BlacklightOaiProvider::Controller
+```
+- add this to `config/routes.rb`
+```ruby
+  concern :oai_provider, BlacklightOaiProvider::Routes.new
+
+  resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
+    concerns :oai_provider
+    ...
+  end
 ```
 
 ## Configuration
@@ -134,23 +143,7 @@ config.oai = {
   }
 }
 ```
-## Injection
-This plugin assumes it is in a Blacklight Rails app, uses Blacklight methods, Rails methods, and standard ruby module includes to inject it's behaviors into the app.
 
-You can turn off this injection if you like, although it will make the plugin less (or non-) functional unless you manually do similar injection. See `lib/blacklight_oai_provider.rb#inject!` to see exactly what's going on.
-
-In any initializer, you can set:
-```ruby
-BlacklightOaiProvider.omit_inject = true
-```
-to turn off all injection. The plugin will be completely non-functional if you do this, of course. But perhaps you could try to re-use some of it's classes in a non-Blacklight, highly hacked Blacklight, or even non-Rails application this way.
-
-You can also turn off injection of individual components, which could be more useful:
-```ruby
-BlacklightOaiProvider.omit_inject = {
-  routes: false,
-}
-```
 ## Tests
 We use `engine_cart` and `solr_wrapper` to run tests on a dummy instance of an app using this plugin.
 
