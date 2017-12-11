@@ -23,5 +23,17 @@ module BlacklightOaiProvider
         end
       end
     end
+
+    def inject_blacklight_oai_routes
+      file_path = File.join('config', 'routes.rb')
+
+      inject_into_file file_path, after: 'Rails.application.routes.draw do' do
+        "\n  concern :oai_provider, BlacklightOaiProvider::Routes.new\n"
+      end
+
+      inject_into_file file_path, after: /resource :catalog,+(.*)do$/ do
+        "\n    concerns :oai_provider\n"
+      end
+    end
   end
 end
