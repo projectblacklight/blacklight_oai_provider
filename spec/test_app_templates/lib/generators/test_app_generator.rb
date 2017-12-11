@@ -43,8 +43,8 @@ class TestAppGenerator < Rails::Generators::Base
   def add_test_blacklight_oai_config
     say_status("warning", "ADDING BL OIA-PMH CONFIG")
 
-    insert_into_file "app/controllers/catalog_controller.rb", after: "    config.default_solr_params = { \n" do
-      "      fl: '*',\n"
+    insert_into_file "app/controllers/catalog_controller.rb", after: "config.default_solr_params = {" do
+      "\n      fl: '*',\n"
     end
 
     insert_into_file "app/controllers/catalog_controller.rb", after: "  configure_blacklight do |config|\n" do
