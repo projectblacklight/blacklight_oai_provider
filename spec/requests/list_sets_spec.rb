@@ -27,7 +27,7 @@ RSpec.describe 'OAI-PMH ListSets Request' do
 
   context 'without set configuration' do
     it 'shows that no sets exist' do
-      get oai_provider_path(verb: 'ListSets')
+      get oai_catalog_path(verb: 'ListSets')
       expect(xml.xpath('//xmlns:error').text).to eql 'This repository does not support sets.'
     end
   end
@@ -36,18 +36,18 @@ RSpec.describe 'OAI-PMH ListSets Request' do
     let(:test_oai_config) { old_config }
 
     it 'shows all sets' do
-      get oai_provider_path(verb: 'ListSets')
+      get oai_catalog_path(verb: 'ListSets')
       expect(xml.xpath('//xmlns:set').count).to be 12
     end
 
     it 'contains english set' do
-      get oai_provider_path(verb: 'ListSets')
+      get oai_catalog_path(verb: 'ListSets')
       expect(xml.xpath('//xmlns:set//xmlns:setSpec').map(&:text)).to include 'language:English'
       expect(xml.xpath('//xmlns:set//xmlns:setName').map(&:text)).to include 'Language: English'
     end
 
     it 'shows the correct verb' do
-      get oai_provider_path(verb: 'ListSets')
+      get oai_catalog_path(verb: 'ListSets')
       expect(xml.at_xpath('//xmlns:request').attribute('verb').value).to eql 'ListSets'
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe 'OAI-PMH ListSets Request' do
     end
 
     it 'shows set description' do
-      get oai_provider_path(verb: 'ListSets')
+      get oai_catalog_path(verb: 'ListSets')
       expect(
         xml.at_xpath('//xmlns:set/xmlns:setDescription/oai_dc:dc/dc:description', namespaces).text
       ).to eql 'Subject topic set using FAST subjects'
@@ -92,7 +92,7 @@ RSpec.describe 'OAI-PMH ListSets Request' do
     end
 
     it "shows correct description" do
-      get oai_provider_path(verb: 'ListSets')
+      get oai_catalog_path(verb: 'ListSets')
       expect(
         xml.at_xpath('//xmlns:set/xmlns:setDescription/oai_dc:dc/dc:description', namespaces).text
       ).to eql 'This is a format set containing records with the value of Book.'

@@ -112,7 +112,7 @@ describe 'OIA-PMH ListRecords Request' do
     it 'only records from the set are returned' do
       params = { verb: 'ListRecords', metadataPrefix: 'oai_dc', set: 'language:Japanese' }
 
-      get oai_provider_path(params)
+      get oai_catalog_path(params)
       expect(xml.xpath('//xmlns:record').count).to be 2
     end
   end
