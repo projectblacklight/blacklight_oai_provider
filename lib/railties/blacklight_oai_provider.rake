@@ -6,7 +6,7 @@ namespace :blacklight_oai_provider do
       require 'yaml'
 
       docs = YAML.safe_load(File.open(File.join(BlacklightOaiProvider.root, 'solr', 'sample_solr_documents.yml')))
-      conn = RSolr.connect(Blacklight.connection_config)
+      conn = Blacklight.default_index.connection
       conn.add docs
       conn.commit
     end
