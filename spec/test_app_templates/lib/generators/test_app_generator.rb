@@ -70,7 +70,6 @@ class TestAppGenerator < Rails::Generators::Base
         :sample_id => '109660'
       },
       :document => {
-        :model => SolrDocument,
         :set_fields => [
           { label: 'language', solr_field: 'language_facet' }
         ],

@@ -66,7 +66,6 @@ configure_blacklight do |config|
       sample_id: '109660'
     },
     document: {
-      model: SolrDocument, # SolrDocument class being used, default: SolrDocument
       limit: 25            # number of records returned with each request, default: 15
       set_fields: [        # ability to define ListSets, optional, default: nil
         { label: 'language', solr_field: 'language_facet' }

@@ -4,7 +4,7 @@ module BlacklightOaiProvider
 
     def initialize(controller, options = {})
       @controller      = controller
-      @document_model  = options[:model] || ::SolrDocument
+      @document_model  = @controller.blacklight_config.document_model
       @solr_timestamp  = document_model.timestamp_key
       @timestamp_field = 'timestamp' # method name used by ruby-oai
       @limit           = options[:limit] || 15
