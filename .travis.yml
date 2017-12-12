@@ -4,13 +4,13 @@ notifications:
 language: ruby
 sudo: false
 rvm:
+  - 2.4
   - 2.3.3
   - 2.2
-  - 2.1
 
 env:
  - "RAILS_VERSION=4.2.9"
- - "RAILS_VERSION=4.1.16"
+ - "RAILS_VERSION=5.0.6"
 
 before_install:
   - gem install bundler
