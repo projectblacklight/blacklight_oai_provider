@@ -14,9 +14,8 @@ module BlacklightOaiProvider
     # Used when we need a second Solr query to get range facets, after the
     # first found min/max from result set.
     def oai
-      options = params.delete_if { |k, _| %w[controller action].include?(k) }
       body = oai_provider
-             .process_request(options)
+             .process_request(oai_params.to_h)
              .gsub('<?xml version="1.0" encoding="UTF-8"?>') do |m|
                "#{m}\n<?xml-stylesheet type=\"text/xsl\" href=\"#{ActionController::Base.helpers.asset_path('blacklight_oai_provider/oai2.xsl')}\"?>\n"
              end
@@ -33,6 +32,12 @@ module BlacklightOaiProvider
 
     def oai_provider
       @oai_provider ||= BlacklightOaiProvider::SolrDocumentProvider.new(self, oai_config)
+    end
+
+    private
+
+    def oai_params
+      params.permit(:verb, :identifier, :metadataPrefix, :set, :from, :until, :resumptionToken)
     end
   end
 end
