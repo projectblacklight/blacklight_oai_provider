@@ -44,16 +44,16 @@ class TestAppGenerator < Rails::Generators::Base
     say_status("warning", "ADDING BL OIA-PMH CONFIG")
 
     insert_into_file "app/controllers/catalog_controller.rb", after: "    config.default_solr_params = { \n" do
-      "      :fl => '*',\n"
+      "      fl: '*',\n"
     end
 
     insert_into_file "app/controllers/catalog_controller.rb", after: "  configure_blacklight do |config|\n" do
       <<-CONFIG
     config.default_document_solr_params = {
-      :qt => 'search',
-      :fl => '*',
-      :rows => 1,
-      :q => '{!raw f=id v=$id}'
+      qt: 'search',
+      fl: '*',
+      rows: 1,
+      q: '{!raw f=id v=$id}'
     }
       CONFIG
     end
@@ -61,19 +61,19 @@ class TestAppGenerator < Rails::Generators::Base
     insert_into_file "app/controllers/catalog_controller.rb", after: "configure_blacklight do |config|\n" do
       <<-CONFIG
     config.oai = {
-      :provider => {
-        :repository_name => 'Test Repository',
-        :repository_url => 'http://localhost/catalog/oai',
-        :record_prefix => 'oai:test',
-        :admin_email => 'root@localhost',
-        :deletion_support => 'persistent',
-        :sample_id => '109660'
+      provider: {
+        repository_name: 'Test Repository',
+        repository_url: 'http://localhost/catalog/oai',
+        record_prefix: 'oai:test',
+        admin_email: 'root@localhost',
+        deletion_support: 'persistent',
+        sample_id: '109660'
       },
-      :document => {
-        :set_fields => [
+      document: {
+        set_fields: [
           { label: 'language', solr_field: 'language_facet' }
         ],
-        :limit => 25
+        limit: 25
       }
     }
       CONFIG
