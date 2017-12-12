@@ -3,6 +3,8 @@ notifications:
 
 language: ruby
 sudo: false
+addons:
+  chrome: stable
 rvm:
   - 2.4
   - 2.3.3
