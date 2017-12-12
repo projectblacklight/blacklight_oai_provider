@@ -11,8 +11,11 @@ rvm:
   - 2.2
 
 env:
- - "RAILS_VERSION=4.2.9"
- - "RAILS_VERSION=5.0.6"
+  - "RAILS_VERSION=4.2.9"
+  - "RAILS_VERSION=5.0.6"
+  - "RAILS_VERSION=5.1.4"
 
+before_script:
+  - if [[ "${RAILS_VERSION}" =~ ^4.2.* ]]; then perl -pi -e "s/ActiveRecord::Migration\[[\d\.]+\]/ActiveRecord::Migration/" db/migrate/*; fi
 before_install:
   - gem install bundler
