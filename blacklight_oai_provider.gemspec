@@ -9,11 +9,6 @@ Gem::Specification.new do |s|
   s.homepage    = "http://projectblacklight.org/"
   s.summary = "Blacklight Oai Provider plugin"
 
-  s.post_install_message = %q{
-BlacklightOaiProvider v5.x implements configuration changes. Please visit README for more information.
-
-}
-
   s.rubyforge_project = "blacklight"
 
   s.files         = `git ls-files`.split("\n")
