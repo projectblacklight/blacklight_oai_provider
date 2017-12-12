@@ -20,7 +20,7 @@ module BlacklightOaiProvider
              .gsub('<?xml version="1.0" encoding="UTF-8"?>') do |m|
                "#{m}\n<?xml-stylesheet type=\"text/xsl\" href=\"#{ActionController::Base.helpers.asset_path('blacklight_oai_provider/oai2.xsl')}\"?>\n"
              end
-      render text: body, content_type: 'text/xml'
+      render xml: body, content_type: 'text/xml'
     end
 
     # Uses Blacklight.config, needs to be modified when
