@@ -31,7 +31,6 @@ describe CatalogController do
 
     it 'return corrext document configuration' do
       expect(controller.oai_config[:document][:limit]).to be 25
-      expect(controller.oai_config[:document][:model]).to be_a Class
     end
   end
 
