@@ -13,6 +13,17 @@ class TestAppGenerator < Rails::Generators::Base
     generate 'blacklight:install', '--devise'
   end
 
+  def change_migrations_if_rails_4_2
+    return unless Rails.version =~ /^4.2.*/
+
+    say_status('warning', 'OVERRIDING BLACKLIGHT MIGRATION FOR RAILS 4.2', :yellow)
+    migrations = Rails.root.join('db', 'migrate', '*.rb')
+    Dir.glob(migrations).each do |m|
+      text = File.read(m).gsub(/ActiveRecord::Migration\[[\d\.]+\]/, 'ActiveRecord::Migration')
+      File.open(m, 'w').write(text)
+    end
+  end
+
   # Add favicon.ico to asset path
   # ADD THIS LINE Rails.application.config.assets.precompile += %w( favicon.ico )
   # TO config/assets.rb
