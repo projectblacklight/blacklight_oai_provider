@@ -12,6 +12,7 @@ rvm:
 env:
  - "RAILS_VERSION=4.2.9"
  - "RAILS_VERSION=5.0.6"
+ - "RAILS_VERSION=5.1.4"
 
 before_install:
   - gem install bundler
