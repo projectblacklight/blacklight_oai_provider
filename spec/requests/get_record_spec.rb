@@ -51,4 +51,14 @@ describe 'OIA-PMH GetRecord Request' do
   it 'contains format' do
     expect(xml.at_xpath('//xmlns:metadata/oai_dc:dc/dc:format', namespaces).text).to eql 'Book'
   end
+
+  context 'when identifier has slashes' do
+    before do
+      get '/catalog/oai?verb=GetRecord&identifier=oai:test:fe/gh/00313831&metadataPrefix=oai_dc'
+    end
+
+    it 'retrieves record' do
+      expect(xml.at_xpath('//xmlns:GetRecord/xmlns:record/xmlns:header/xmlns:identifier').text).to eql 'oai:test:fe/gh/00313831'
+    end
+  end
 end
