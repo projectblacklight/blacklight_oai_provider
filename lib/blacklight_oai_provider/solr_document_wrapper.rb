@@ -41,7 +41,7 @@ module BlacklightOaiProvider
         end
         response.documents
       else
-        @controller.fetch(selector.split('/', 2).last).first.documents.first
+        @controller.fetch(selector).first.documents.first
       end
     end
 
