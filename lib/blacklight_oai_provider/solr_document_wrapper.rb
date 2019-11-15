@@ -18,15 +18,19 @@ module BlacklightOaiProvider
       @set.all
     end
 
+    def search_service
+      @controller.search_service
+    end
+
     def earliest
-      builder = @controller.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} asc", rows: 1)
-      response = @controller.repository.search(builder)
+      builder = search_service.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} asc", rows: 1)
+      response = search_service.repository.search(builder)
       response.documents.first.timestamp
     end
 
     def latest
-      builder = @controller.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} desc", rows: 1)
-      response = @controller.repository.search(builder)
+      builder = search_service.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} desc", rows: 1)
+      response = search_service.repository.search(builder)
       response.documents.first.timestamp
     end
 
@@ -34,19 +38,19 @@ module BlacklightOaiProvider
       return next_set(options[:resumption_token]) if options[:resumption_token]
 
       if selector == :all
-        response = @controller.repository.search(conditions(options))
+        response = search_service.repository.search(conditions(options))
 
         if limit && response.total > limit
           return select_partial(BlacklightOaiProvider::ResumptionToken.new(options.merge(last: 0), nil, response.total))
         end
         response.documents
       else
-        @controller.fetch(selector).first.documents.first
+        search_service.fetch(selector).first.documents.first
       end
     end
 
     def select_partial(token)
-      records = @controller.repository.search(token_conditions(token)).documents
+      records = search_service.repository.search(token_conditions(token)).documents
 
       raise ::OAI::ResumptionTokenException unless records
 
@@ -67,7 +71,7 @@ module BlacklightOaiProvider
     end
 
     def conditions(options) # conditions/query derived from options
-      query = @controller.search_builder.merge(sort: "#{solr_timestamp} asc", rows: limit).query
+      query = search_service.search_builder.merge(sort: "#{solr_timestamp} asc", rows: limit).query
 
       if options[:from].present? || options[:until].present?
         query.append_filter_query(

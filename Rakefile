@@ -14,8 +14,6 @@ RSpec::Core::RakeTask.new
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new(:rubocop)
 
-EngineCart.fingerprint_proc = EngineCart.rails_fingerprint_proc
-
 desc 'Run test suite'
 task ci: ['engine_cart:generate'] do
   SolrWrapper.wrap do |solr|

@@ -18,7 +18,7 @@ describe 'OIA-PMH ListIdentifiers Request' do
     end
 
     it 'contains resumptionToken' do
-      expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql 'oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z).t(30):25'
+      expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql 'oai_dc.f(2014-02-03T18:42:53Z).u(2015-02-03T18:42:53Z).t(30):25'
     end
   end
 
@@ -27,8 +27,8 @@ describe 'OIA-PMH ListIdentifiers Request' do
       get '/catalog/oai?verb=ListIdentifiers&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z).t(30):25'
     end
 
-    it 'returns 5 records' do
-      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to be 5
+    it 'returns 4 records' do
+      expect(xml.xpath('//xmlns:ListIdentifiers/xmlns:header').count).to be 4
     end
 
     it 'first record has identifier and timestamp' do
@@ -57,7 +57,7 @@ describe 'OIA-PMH ListIdentifiers Request' do
 
   context 'with different timestamp_field' do
     before :all do
-      SolrDocument.timestamp_key = "record_creation_dt"
+      SolrDocument.timestamp_key = "record_creation_dtsi"
     end
 
     before do
