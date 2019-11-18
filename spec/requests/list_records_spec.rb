@@ -24,7 +24,7 @@ describe 'OIA-PMH ListRecords Request' do
     end
 
     it 'contains resumptionToken' do
-      expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql 'oai_dc.f(2014-02-03T18:42:53Z).u(2014-03-03T18:42:53Z).t(30):25'
+      expect(xml.at_xpath('//xmlns:resumptionToken').text).to eql 'oai_dc.f(2014-02-03T18:42:53Z).u(2015-02-03T18:42:53Z).t(30):25'
     end
 
     context 'for record' do
@@ -73,8 +73,8 @@ describe 'OIA-PMH ListRecords Request' do
       get '/catalog/oai?verb=ListRecords&resumptionToken=oai_dc.f(2014-02-03T18:42:53Z).u(2014-02-03T18:42:53Z).t(29):25'
     end
 
-    it 'returns 4 records' do
-      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to be 4
+    it 'returns 3 records' do
+      expect(xml.xpath('//xmlns:ListRecords/xmlns:record/xmlns:header').count).to be 3
     end
 
     it 'first record has oai_dc metadata element' do
@@ -119,7 +119,7 @@ describe 'OIA-PMH ListRecords Request' do
 
   context 'throws noRecordsMatch error' do
     before do
-      get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2015-01-01'
+      get '/catalog/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2016-01-01'
     end
 
     it 'returns no records error' do

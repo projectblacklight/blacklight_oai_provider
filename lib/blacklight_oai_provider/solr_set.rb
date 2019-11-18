@@ -1,6 +1,10 @@
 module BlacklightOaiProvider
   class SolrSet < BlacklightOaiProvider::Set
     class << self
+      def search_service
+        @controller.search_service
+      end
+
       # Return an array of all sets, or nil if sets are not supported
       def all
         return if @fields.nil?
@@ -8,8 +12,8 @@ module BlacklightOaiProvider
         params = { rows: 0, facet: true, 'facet.field' => solr_fields }
         solr_fields.each { |field| params["f.#{field}.facet.limit"] = -1 } # override any potential blacklight limits
 
-        builder = @controller.search_builder.merge(params)
-        response = @controller.repository.search(builder)
+        builder = search_service.search_builder.merge(params)
+        response = search_service.repository.search(builder)
 
         sets_from_facets(response.facet_fields) if response.facet_fields
       end

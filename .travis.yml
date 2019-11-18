@@ -1,18 +1,28 @@
+dist: bionic
+language: ruby
+addons:
+  chrome: stable
+before_install:
+  - google-chrome-stable --headless --disable-gpu --no-sandbox --remote-debugging-port=9222 http://localhost &
+
 notifications:
   email: false
 
-language: ruby
-sudo: required
-addons:
-  chrome: stable
-rvm:
-  - 2.4
-  - 2.3.3
+matrix:
+  include:
+    - rvm: 2.6.5
+      env: "RAILS_VERSION=6.0.0 ENGINE_CART_RAILS_OPTIONS=\"--skip-webpack-install\""
+    - rvm: 2.6.5
+      env: "RAILS_VERSION=5.2.3"
+    - rvm: 2.5.7
+      env: "RAILS_VERSION=5.1.7"
 
-env:
- - "RAILS_VERSION=4.2.9"
- - "RAILS_VERSION=5.0.6"
- - "RAILS_VERSION=5.1.4"
+notifications:
+  irc: "irc.freenode.org#blacklight"
+  email:
+      - blacklight-commits@googlegroups.com
 
-before_install:
-  - gem install bundler
+global_env:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+
+jdk: oraclejdk9
