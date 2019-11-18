@@ -13,6 +13,12 @@ A few maintenance branches have been left in place in case there is interest to 
 
 `v4.x` -> Support for Blacklight 4.0 and Rails 3.0
 
+`release-5.x` -> Support for Blacklight 5.x
+
+`release-6.x` -> Support for Blacklight 6.x
+
+`release-7.x` -> Support for Blacklight 7.x
+
 ## Requirements
 A Rails app running Rails 4.x and Blacklight 4.x.
 
