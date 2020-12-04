@@ -32,14 +32,15 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentProvider do
     end
 
     context 'with Procs provided as option values' do
-      let(:options) {
+      let(:options) do
         {
-            provider: {
-                repository_name: ->(kontroller) { "Hello #{kontroller.__id__}" },
-                repository_url: ->(kontroller) { "Hello #{kontroller.view_context.oai_catalog_url}" },
-            }
+          provider: {
+            repository_name: ->(kontroller) { "Hello #{kontroller.__id__}" },
+            repository_url: ->(kontroller) { "Hello #{kontroller.view_context.oai_catalog_url}" }
+          }
         }
-      }
+      end
+
       it 'call()-s the Proc to set the option value' do
         expect(provider.name).to eq "Hello #{controller.__id__}"
         expect(provider.url).to eq "Hello #{controller.view_context.oai_catalog_url}"
