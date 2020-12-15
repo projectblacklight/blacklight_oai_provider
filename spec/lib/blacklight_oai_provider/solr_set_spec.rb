@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe BlacklightOaiProvider::SolrSet do
   let(:controller) { CatalogController.new }
   let(:fields) do
-    [{ label: 'language', solr_field: 'language_facet' }]
+    [{ label: 'language', solr_field: 'language_ssim' }]
   end
 
   before do
@@ -23,7 +23,7 @@ RSpec.describe BlacklightOaiProvider::SolrSet do
     context 'with multiple fields' do
       let(:fields) do
         [
-          { label: 'language', solr_field: 'language_facet' },
+          { label: 'language', solr_field: 'language_ssim' },
           { solr_field: 'format' }
         ]
       end
@@ -35,7 +35,7 @@ RSpec.describe BlacklightOaiProvider::SolrSet do
 
     context 'for a field with no values' do
       let(:fields) do
-        [{ label: 'author', solr_field: 'author_display' }]
+        [{ label: 'author', solr_field: 'author_ts' }]
       end
 
       it 'returns nil' do
@@ -45,12 +45,12 @@ RSpec.describe BlacklightOaiProvider::SolrSet do
 
     context 'for a field with facet config limit' do
       let(:fields) do
-        [{ label: 'lc_alpha', solr_field: 'lc_alpha_facet' }]
+        [{ label: 'lc_alpha', solr_field: 'lc_alpha_ssim' }]
       end
 
       before do
         CatalogController.configure_blacklight do |config|
-          config.add_facet_field 'lc_alpha_facet', label: 'lc_alpha', limit: 2
+          config.add_facet_field 'lc_alpha_ssim', label: 'lc_alpha', limit: 2
         end
       end
 
@@ -65,7 +65,7 @@ RSpec.describe BlacklightOaiProvider::SolrSet do
       let(:spec) { 'language:Hebrew' }
 
       it 'returns the filter query' do
-        expect(described_class.from_spec(spec)).to eq 'language_facet:"Hebrew"'
+        expect(described_class.from_spec(spec)).to eq 'language_ssim:"Hebrew"'
       end
     end
 
@@ -94,7 +94,7 @@ RSpec.describe BlacklightOaiProvider::SolrSet do
     end
 
     it 'gets solr field' do
-      expect(set.solr_field).to eql 'language_facet'
+      expect(set.solr_field).to eql 'language_ssim'
     end
   end
 end

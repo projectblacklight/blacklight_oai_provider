@@ -57,7 +57,7 @@ RSpec.describe 'OAI-PMH ListSets Request' do
       {
         document: {
           set_fields: [
-            { label: 'subject', solr_field: 'subject_topic_facet',
+            { label: 'subject', solr_field: 'subject_ssim',
               description: "Subject topic set using FAST subjects" }
           ]
         }
