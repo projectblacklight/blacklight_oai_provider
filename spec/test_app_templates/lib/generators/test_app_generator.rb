@@ -45,6 +45,10 @@ class TestAppGenerator < Rails::Generators::Base
     end
   end
 
+  def overwrite_catalog_controller
+    copy_file "templates/catalog_controller.rb", "app/controllers/catalog_controller.rb", force: true
+  end
+
   def install_engine
     say_status("warning", "GENERATING BL OAI PLUGIN", :yellow)
 
