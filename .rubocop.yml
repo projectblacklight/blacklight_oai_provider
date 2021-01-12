@@ -4,6 +4,7 @@ inherit_from:
   - .rubocop_todo.yml
 
 AllCops:
+  TargetRubyVersion: 2.3
   DisplayCopNames: true
   Exclude:
   - "blacklight_oai_provider.gemspec"

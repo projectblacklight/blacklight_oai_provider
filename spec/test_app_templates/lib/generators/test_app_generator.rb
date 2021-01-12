@@ -45,6 +45,10 @@ class TestAppGenerator < Rails::Generators::Base
     end
   end
 
+  def overwrite_catalog_controller
+    copy_file "templates/catalog_controller.rb", "app/controllers/catalog_controller.rb", force: true
+  end
+
   def install_engine
     say_status("warning", "GENERATING BL OAI PLUGIN", :yellow)
 
@@ -82,7 +86,7 @@ class TestAppGenerator < Rails::Generators::Base
       },
       document: {
         set_fields: [
-          { label: 'language', solr_field: 'language_facet' }
+          { label: 'language', solr_field: 'language_ssim' }
         ],
         limit: 25
       }
@@ -93,12 +97,12 @@ class TestAppGenerator < Rails::Generators::Base
     insert_into_file "app/models/solr_document.rb", after: "include BlacklightOaiProvider::SolrDocument\n" do
       <<-CONFIG
   field_semantics.merge!(
-    title: "title_display",
-    creator: "author_display",
-    date: "pub_date",
-    subject: "subject_topic_facet",
+    title: "title_tsim",
+    date: "pub_date_ssim",
+    subject: "subject_ssim",
+    creator: "author_tsim",
     format: "format",
-    language: "language_facet"
+    language: "language_ssim",
   )
       CONFIG
     end

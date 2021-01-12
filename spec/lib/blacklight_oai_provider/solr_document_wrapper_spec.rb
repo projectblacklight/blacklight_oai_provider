@@ -38,7 +38,7 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
 
   describe '#latest' do
     it 'returns the latest timestamp of all the records' do
-      expect(wrapper.latest).to eq Time.parse('2014-03-03 18:42:53.056000000 +0000').utc
+      expect(wrapper.latest).to eq Time.parse('2015-02-03 18:42:53.056000000 +0000').utc
     end
   end
 

@@ -1,7 +1,7 @@
 # Place any default configuration for solr_wrapper here
 port: 8983
 verbose: true
-version: 5.5.5
+version: 8.6.2
 managed: true
 collection:
   dir: solr/conf/
