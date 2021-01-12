@@ -92,7 +92,7 @@ configure_blacklight do |config|
 end
 ```
 
-The "provider" configuration is documented as part of the ruby-oai gem at https://github.com/code4lib/ruby-oai
+The "provider" configuration is documented as part of the ruby-oai gem at https://github.com/code4lib/ruby-oai and can be lambdas for dynamic configuration (e.g. `repository_name: ->(controller) { controller.send(:repository_name) }`).
 
 A basic set model is included that maps Solr fields to OAI sets. Provide `set_fields` with an array of hashes defining the solr_field, and optionally a label and description. The configuration above will cause the `ListSets` verb to query Solr for unique values of the `language_facet` field and present each value as a set using a spec format of `language:value`. When the `set` parameter is supplied to the `ListRecords` verb, it will append a filter to the Solr query of the form `fq=language_facet:value`. If no label is provided, the set will use the `solr_field` name. To customize the ListSet implementation, see [customizing listsets](#customizing-listsets).
 
