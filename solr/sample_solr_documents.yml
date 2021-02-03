@@ -1932,6 +1932,7 @@
   - Israel
   title_si: bituaḥ u-viṭaḥon sotsyali
   id: '2005553155'
+  visibility_si: "open"
   author_si: "\U0010FFFF Bituaḥ uviṭaḥon sotsyali"
   title_addl_tsim:
   - "[Bituaḥ u-viṭaḥon sotsyali]."
@@ -2064,6 +2065,7 @@
   - '9780743297790'
   - 0743297792
   id: '2007020969'
+  visibility_si: "restricted"
   author_si: Hearth Amy Hill 1958 Strong Medicine speaks a Native American elder
     has her say  an oral history
   title_addl_tsim:

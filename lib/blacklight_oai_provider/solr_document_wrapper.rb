@@ -41,7 +41,8 @@ module BlacklightOaiProvider
         end
         response.documents
       else
-        @controller.fetch(selector).first.documents.first
+        query = @controller.search_builder.where(document_model.unique_key => selector).query
+        @controller.repository.search(query).documents.first
       end
     end
 

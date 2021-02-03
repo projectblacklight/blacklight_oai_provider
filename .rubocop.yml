@@ -50,3 +50,6 @@ Style/Documentation:
 Lint/UnusedMethodArgument:
   Exclude:
   - 'lib/blacklight_oai_provider/set.rb'
+
+RSpec/NestedGroups:
+  Enabled: false
