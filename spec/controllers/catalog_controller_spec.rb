@@ -29,7 +29,7 @@ describe CatalogController do
       )
     end
 
-    it 'return corrext document configuration' do
+    it 'return correct document configuration' do
       expect(controller.oai_config[:document][:limit]).to be 25
     end
   end
