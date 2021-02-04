@@ -51,8 +51,30 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
     end
 
     context 'when selector is an individual record' do
-      it 'returns a single record' do
-        expect(wrapper.find('2005553155')).to be_a SolrDocument
+      class VisibilityAwareSearchBuilder < Blacklight::SearchBuilder
+        include Blacklight::Solr::SearchBuilderBehavior
+        self.default_processor_chain += [:only_visible]
+
+        def only_visible(solr_parameters)
+          solr_parameters[:fq] ||= []
+          solr_parameters[:fq] << 'visibility_si:"open"'
+        end
+      end
+
+      before do
+        allow(controller).to receive(:search_builder_class).and_return(VisibilityAwareSearchBuilder)
+      end
+
+      context 'with a restricted work' do
+        it 'returns nothing' do
+          expect(wrapper.find('2007020969')).to be_nil
+        end
+      end
+
+      context 'with a public work' do
+        it 'returns a single record' do
+          expect(wrapper.find('2005553155')).to be_a SolrDocument
+        end
       end
     end
   end
