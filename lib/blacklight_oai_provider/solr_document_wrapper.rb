@@ -45,7 +45,9 @@ module BlacklightOaiProvider
         end
         response.documents
       else
-        search_service.fetch(selector).first.documents.first
+        # search_service.fetch(selector).first.documents.first
+        query = search_service.search_builder.where(id: selector).query
+        search_service.repository.search(query).documents.first
       end
     end
 
