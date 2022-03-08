@@ -4,7 +4,8 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
   subject(:wrapper) { described_class.new(controller, options) }
 
   let(:options) { {} }
-  let(:controller) { CatalogController.new }
+  let(:controller_class) { CatalogController }
+  let(:controller) { controller_class.new }
 
   before do
     allow(controller).to receive(:params).and_return({})
@@ -61,20 +62,23 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
         end
       end
 
-      before do
-        allow_any_instance_of(Blacklight::SearchService).to receive(:search_builder_class).and_return(VisibilityAwareSearchBuilder)
-      end
-
-      context 'with a restricted work' do
-        it 'returns nothing' do
-          expect(wrapper.find('2007020969')).to be_nil
+      let(:controller_class) do
+        Class.new(CatalogController) do
+          configure_blacklight do |config|
+            config.search_builder_class = VisibilityAwareSearchBuilder
+          end
         end
       end
 
-      context 'with a public work' do
-        it 'returns a single record' do
-          expect(wrapper.find('2005553155')).to be_a SolrDocument
-        end
+      let(:restricted_work) { '2007020969' }
+      let(:public_work) { '2005553155' }
+
+      it 'returns nothing with a restricted work' do
+        expect(wrapper.find(restricted_work)).to be_nil
+      end
+
+      it 'returns a single record with a public work' do
+        expect(wrapper.find(public_work)).to be_a SolrDocument
       end
     end
   end
