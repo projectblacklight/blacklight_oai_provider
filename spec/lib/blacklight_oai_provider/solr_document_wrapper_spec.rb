@@ -52,20 +52,22 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
     end
 
     context 'when selector is an individual record' do
-      class VisibilityAwareSearchBuilder < Blacklight::SearchBuilder
-        include Blacklight::Solr::SearchBuilderBehavior
-        self.default_processor_chain += [:only_visible]
+      let(:search_builder_class) do
+        Class.new(Blacklight::SearchBuilder) do
+          include Blacklight::Solr::SearchBuilderBehavior
+          self.default_processor_chain += [:only_visible]
 
-        def only_visible(solr_parameters)
-          solr_parameters[:fq] ||= []
-          solr_parameters[:fq] << 'visibility_si:"open"'
+          def only_visible(solr_parameters)
+            solr_parameters[:fq] ||= []
+            solr_parameters[:fq] << 'visibility_si:"open"'
+          end
         end
       end
-
       let(:controller_class) do
+        stub_const 'VisibilitySearchBuilder', search_builder_class
         Class.new(CatalogController) do
-          configure_blacklight do |config|
-            config.search_builder_class = VisibilityAwareSearchBuilder
+          blacklight_config.configure do |config|
+            config.search_builder_class = VisibilitySearchBuilder
           end
         end
       end
