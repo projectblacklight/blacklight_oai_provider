@@ -5,10 +5,11 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
 
   let(:options) { {} }
   let(:controller_class) { CatalogController }
-  let(:controller) { controller_class.new }
+  let(:controller) { instance_double(CatalogController) }
+  let(:blacklight_config) { Blacklight::Configuration.new }
 
   before do
-    allow(controller).to receive(:params).and_return({})
+    allow(controller).to receive_messages(params: {}, blacklight_config: blacklight_config)
   end
 
   describe '#initialize' do
@@ -31,56 +32,99 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
     end
   end
 
+  shared_context "timestamp_searches" do
+    let(:expected_timestamp) { '2014-02-03 18:42:53.056000000 +0000' }
+    let(:repository) { instance_double(Blacklight::Solr::Repository) }
+    let(:search_builder) { instance_double(Blacklight::SearchBuilder) }
+    let(:search_service) { instance_double(Blacklight::SearchService) }
+    let(:documents) { [SolrDocument.new('timestamp' => expected_timestamp)] }
+    let(:response) { OpenStruct.new(documents: documents, total: documents.length) }
+
+    before do
+      allow(controller).to receive(:search_service).and_return(search_service)
+      allow(search_service).to receive_messages(repository: repository, search_builder: search_builder)
+      allow(repository).to receive(:search).with(search_builder).and_return(response)
+    end
+  end
+
   describe '#earliest' do
+    include_context "timestamp_searches"
+
+    before do
+      allow(search_builder).to receive(:merge).with(hash_including(sort: "timestamp asc")).and_return(search_builder)
+    end
+
     it 'returns the earliest timestamp of all the records' do
-      expect(wrapper.earliest).to eq Time.parse('2014-02-03 18:42:53.056000000 +0000').utc
+      expect(wrapper.earliest).to eq Time.parse(expected_timestamp).utc
+    end
+
+    context "no documents are returned" do
+      let(:documents) { [] }
+
+      it 'returns a default timestamp' do
+        expect(Time.parse(wrapper.earliest).utc).to be_a Time
+      end
     end
   end
 
   describe '#latest' do
+    include_context "timestamp_searches"
+
+    before do
+      allow(search_builder).to receive(:merge).with(hash_including(sort: "timestamp desc")).and_return(search_builder)
+    end
+
     it 'returns the latest timestamp of all the records' do
-      expect(wrapper.latest).to eq Time.parse('2015-02-03 18:42:53.056000000 +0000').utc
+      expect(wrapper.latest).to eq Time.parse(expected_timestamp).utc
+    end
+
+    context "no documents are returned" do
+      let(:documents) { [] }
+
+      it 'returns a default timestamp' do
+        expect(Time.parse(wrapper.latest).utc).to be_a Time
+      end
     end
   end
 
   describe '#find' do
+    include_context "timestamp_searches"
+
+    subject(:result) { wrapper.find(selector) }
+
     context 'when selector is :all' do
+      let(:selector) { :all }
+      let(:query) { {} }
+      let(:limit) { 1 }
+      let(:options) { { limit: limit } }
+      let(:response) { OpenStruct.new(documents: documents, total: limit + 1) }
+      let(:next_response) { OpenStruct.new(documents: documents, total: documents.length) }
+
+      before do
+        allow(search_builder).to receive_messages(merge: search_builder, query: query)
+        allow(repository).to receive(:search).with(query).and_return(response)
+        allow(repository).to receive(:search).with(hash_including(start: 0)).and_return(next_response)
+      end
+
       it 'returns a limited list of all records' do
-        expect(wrapper.find(:all)).to be_a OAI::Provider::PartialResult
-        expect(wrapper.find(:all).records.size).to be 15
+        expect(result).to be_a OAI::Provider::PartialResult
+        expect(result.records.size).to be limit
       end
     end
 
-    context 'when selector is an individual record' do
-      let(:search_builder_class) do
-        Class.new(Blacklight::SearchBuilder) do
-          include Blacklight::Solr::SearchBuilderBehavior
-          self.default_processor_chain += [:only_visible]
+    context 'when selector is an id value' do
+      let(:selector) { '2007020969' }
+      let(:query) { {} }
 
-          def only_visible(solr_parameters)
-            solr_parameters[:fq] ||= []
-            solr_parameters[:fq] << 'visibility_si:"open"'
-          end
-        end
-      end
-      let(:controller_class) do
-        stub_const 'VisibilitySearchBuilder', search_builder_class
-        Class.new(CatalogController) do
-          blacklight_config.configure do |config|
-            config.search_builder_class = VisibilitySearchBuilder
-          end
-        end
+      before do
+        allow(search_builder).to receive(:query).and_return(query)
+        allow(repository).to receive(:search).with(query).and_return(response)
+        allow(search_builder).to receive(:where).with(id: selector).and_return(search_builder)
       end
 
-      let(:restricted_work) { '2007020969' }
-      let(:public_work) { '2005553155' }
-
-      it 'returns nothing with a restricted work' do
-        expect(wrapper.find(restricted_work)).to be_nil
-      end
-
-      it 'returns a single record with a public work' do
-        expect(wrapper.find(public_work)).to be_a SolrDocument
+      it 'searches by id' do
+        expect(result).to be_a(SolrDocument)
+        expect(search_builder).to have_received(:where).with(id: selector)
       end
     end
   end
