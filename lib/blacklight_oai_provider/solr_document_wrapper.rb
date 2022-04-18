@@ -25,13 +25,13 @@ module BlacklightOaiProvider
     def earliest
       builder = search_service.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} asc", rows: 1)
       response = search_service.repository.search(builder)
-      response.documents.first.timestamp
+      timestamp_presence(response.documents.first)
     end
 
     def latest
       builder = search_service.search_builder.merge(fl: solr_timestamp, sort: "#{solr_timestamp} desc", rows: 1)
       response = search_service.repository.search(builder)
-      response.documents.first.timestamp
+      timestamp_presence(response.documents.first)
     end
 
     def find(selector, options = {})
@@ -93,6 +93,11 @@ module BlacklightOaiProvider
       else
         time.to_s
       end
+    end
+
+    def timestamp_presence(solr_doc)
+      return solr_doc.timestamp.presence if solr_doc && solr_doc.timestamp
+      Time.now.utc.to_s
     end
   end
 end
