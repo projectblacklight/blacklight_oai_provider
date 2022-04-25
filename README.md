@@ -150,6 +150,21 @@ config.oai = {
 }
 ```
 
+### Disable pretty print stylesheet
+
+By default, this gem pretty prints results in the browser using an XSLT stylesheet. You can change this behavior by overriding this stylesheet with a custom stylesheet containing an identity transform. In your app, create a file named `app/assets/stylesheets/blacklight_oai_provider/oai2.xsl` containing the following XSLT:
+
+```xml
+<?xml version="1.0" ?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/ | @* | node()">
+  <xsl:copy>
+    <xsl:apply-templates select="@* | node()" />
+  </xsl:copy>
+  </xsl:template>
+</xsl:stylesheet>
+```
+
 ## Tests
 We use `engine_cart` and `solr_wrapper` to run tests on a dummy instance of an app using this plugin.
 
