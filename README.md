@@ -20,7 +20,7 @@ A few maintenance branches have been left in place in case there is interest to 
 `release-7.x` -> Support for Blacklight 7.x
 
 ## Requirements
-A Rails app running Rails 4.x and Blacklight 4.x.
+A Rails app running Rails 6.x and Blacklight 7.x.
 
 OAI-PMH requires a timestamp field for all records. The Solr index should include an appropriate field. This field should be able to support date range queries. By default, the name of this field is `timestamp` (more on how to configure this [below](#solrdocument-configuration)).
 
