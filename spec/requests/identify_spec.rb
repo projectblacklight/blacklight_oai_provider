@@ -12,7 +12,7 @@ describe 'OIA-PMH Identify Request' do
   end
 
   it "contains repository name" do
-    expect(xml.at_xpath('//xmlns:repositoryName').text).to eql 'Test Repository'
+    expect(xml.at_xpath('//xmlns:repositoryName').text).to eql 'Catalog Repository'
   end
 
   it "contains base url" do

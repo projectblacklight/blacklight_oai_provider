@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "blacklight", "~> 7.0"
-  s.add_dependency "oai", "~> 1.0"
+  s.add_dependency "oai", "~> 1.1"
   s.add_dependency "rexml"
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'capybara'

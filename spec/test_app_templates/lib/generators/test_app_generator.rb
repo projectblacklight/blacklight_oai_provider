@@ -11,6 +11,7 @@ class TestAppGenerator < Rails::Generators::Base
     say_status("warning", "GENERATING BL", :yellow)
 
     generate 'blacklight:install', '--devise'
+    generate 'blacklight:test_support'
   end
 
   def change_migrations_if_rails_4_2
@@ -51,14 +52,35 @@ class TestAppGenerator < Rails::Generators::Base
     generate 'blacklight_oai_provider:install'
   end
 
-  def add_test_blacklight_oai_config
+  def add_test_blacklight_oai_controller_config
+    %w[catalog alternate].each { |cn| add_test_config_for(cn) }
+  end
+
+  def add_test_blacklight_oai_model_config
+    insert_into_file "app/models/solr_document.rb", after: "include BlacklightOaiProvider::SolrDocument\n" do
+      <<-CONFIG
+  field_semantics.merge!(
+    title: "title_tsim",
+    date: "pub_date_ssim",
+    subject: "subject_ssim",
+    creator: "author_tsim",
+    format: "format",
+    language: "language_ssim",
+  )
+      CONFIG
+    end
+  end
+
+  private
+
+  def add_test_config_for(controller_basename)
     say_status("warning", "ADDING BL OIA-PMH CONFIG")
 
-    insert_into_file "app/controllers/catalog_controller.rb", after: "config.default_solr_params = {" do
+    insert_into_file "app/controllers/#{controller_basename}_controller.rb", after: "config.default_solr_params = {" do
       "\n      fl: '*',\n"
     end
 
-    insert_into_file "app/controllers/catalog_controller.rb", after: "  configure_blacklight do |config|\n" do
+    insert_into_file "app/controllers/#{controller_basename}_controller.rb", after: "  configure_blacklight do |config|\n" do
       <<-CONFIG
     config.default_document_solr_params = {
       qt: 'search',
@@ -69,12 +91,12 @@ class TestAppGenerator < Rails::Generators::Base
       CONFIG
     end
 
-    insert_into_file "app/controllers/catalog_controller.rb", after: "configure_blacklight do |config|\n" do
+    insert_into_file "app/controllers/#{controller_basename}_controller.rb", after: "configure_blacklight do |config|\n" do
       <<-CONFIG
     config.oai = {
       provider: {
-        repository_name: 'Test Repository',
-        repository_url: 'http://localhost/catalog/oai',
+        repository_name: '#{controller_basename.titleize} Repository',
+        repository_url: 'http://localhost/#{controller_basename}/oai',
         record_prefix: 'oai:test',
         admin_email: 'root@localhost',
         deletion_support: 'persistent',
@@ -87,19 +109,6 @@ class TestAppGenerator < Rails::Generators::Base
         limit: 25
       }
     }
-      CONFIG
-    end
-
-    insert_into_file "app/models/solr_document.rb", after: "include BlacklightOaiProvider::SolrDocument\n" do
-      <<-CONFIG
-  field_semantics.merge!(
-    title: "title_tsim",
-    date: "pub_date_ssim",
-    subject: "subject_ssim",
-    creator: "author_tsim",
-    format: "format",
-    language: "language_ssim",
-  )
       CONFIG
     end
   end
