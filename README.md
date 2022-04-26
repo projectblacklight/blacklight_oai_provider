@@ -20,7 +20,7 @@ A few maintenance branches have been left in place in case there is interest to 
 `release-7.x` -> Support for Blacklight 7.x
 
 ## Requirements
-A Rails app running Rails 4.x and Blacklight 4.x.
+A Rails app running Rails 6.x and Blacklight 7.x.
 
 OAI-PMH requires a timestamp field for all records. The Solr index should include an appropriate field. This field should be able to support date range queries. By default, the name of this field is `timestamp` (more on how to configure this [below](#solrdocument-configuration)).
 
@@ -148,6 +148,21 @@ config.oai = {
     ]
   }
 }
+```
+
+### Disable pretty print stylesheet
+
+By default, this gem pretty prints results in the browser using an XSLT stylesheet. You can change this behavior by overriding this stylesheet with a custom stylesheet containing an identity transform. In your app, create a file named `app/assets/stylesheets/blacklight_oai_provider/oai2.xsl` containing the following XSLT:
+
+```xml
+<?xml version="1.0" ?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/ | @* | node()">
+  <xsl:copy>
+    <xsl:apply-templates select="@* | node()" />
+  </xsl:copy>
+  </xsl:template>
+</xsl:stylesheet>
 ```
 
 ## Tests
