@@ -5,6 +5,7 @@ inherit_from:
 
 AllCops:
   DisplayCopNames: true
+  TargetRubyVersion: 2.2
   Exclude:
   - "blacklight_oai_provider.gemspec"
 
