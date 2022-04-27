@@ -19,7 +19,7 @@ describe CatalogController do
     it 'returns correct provider configuration' do
       expect(controller.oai_config).to include(
         provider: {
-          repository_name: "Test Repository",
+          repository_name: "Catalog Repository",
           repository_url: "http://localhost/catalog/oai",
           record_prefix: "oai:test",
           admin_email: "root@localhost",

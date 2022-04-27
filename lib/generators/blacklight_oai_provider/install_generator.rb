@@ -31,8 +31,8 @@ module BlacklightOaiProvider
         "\n  concern :oai_provider, BlacklightOaiProvider::Routes.new\n"
       end
 
-      inject_into_file file_path, after: /resource :catalog,+(.*)do$/ do
-        "\n    concerns :oai_provider\n"
+      gsub_file file_path, /concerns :searchable$/ do
+        "concerns :oai_provider\n    concerns :searchable\n"
       end
     end
   end
