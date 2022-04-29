@@ -18,7 +18,9 @@ module BlacklightOaiProvider
       super(options.merge(provider_context: :instance_based))
 
       provider_options = convert_to_instance_options(options.fetch(:provider, {}))
-      provider_options[:model] ||= SolrDocumentWrapper.new(controller, options.fetch(:document, {}))
+      provider_options[:granularity] ||= OAI::Const::Granularity::HIGH
+      wrapper_options = options.fetch(:document, {}).dup.merge(granularity: provider_options[:granularity])
+      provider_options[:model] ||= SolrDocumentWrapper.new(controller, wrapper_options)
       provider_options[:name] ||= controller.view_context.application_name
       provider_options[:url] ||= controller.view_context.oai_catalog_url
       provider_options.each do |k, v|
@@ -28,7 +30,7 @@ module BlacklightOaiProvider
     end
 
     def list_sets(options = {})
-      Response::ListSets.new(self, options).to_xml
+      BlacklightOaiProvider::Response::ListSets.new(self, options).to_xml
     end
 
     def convert_to_instance_options(controller_options)

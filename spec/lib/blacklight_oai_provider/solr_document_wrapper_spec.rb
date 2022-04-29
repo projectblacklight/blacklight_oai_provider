@@ -132,7 +132,7 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
   describe '#conditions' do
     include_context "timestamp_searches"
 
-    subject(:result) { wrapper.conditions(options) }
+    subject(:result) { wrapper.conditions(constraints) }
 
     let(:search_builder_class) do
       Class.new(Blacklight::SearchBuilder) do
@@ -142,10 +142,10 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
     let(:search_builder) { search_builder_class.new(controller) }
 
     context 'time options' do
-      let(:options) { { from: Time.utc(2015, 1, 1), until: Time.utc(2015, 1, 2) } }
+      let(:constraints) { { from: Time.utc(2015, 1, 1), until: Time.utc(2015, 1, 2) } }
 
       it 'sets options when from' do
-        options.delete(:until)
+        constraints.delete(:until)
         expect(result).to include(
           "fq" => ["timestamp:[2015-01-01T00:00:00Z TO *]"],
           "sort" => "timestamp asc"
@@ -153,7 +153,7 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
       end
 
       it 'sets options when until' do
-        options.delete(:from)
+        constraints.delete(:from)
         expect(result).to include(
           "fq" => ["timestamp:[* TO 2015-01-02T00:00:00.999Z]"],
           "sort" => "timestamp asc"
@@ -169,28 +169,52 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
     end
 
     context 'date options' do
-      let(:options) { { from: Date.parse('2015-01-01') } }
+      let(:constraints) { { from: Date.parse('2015-01-01'), until: Date.parse('2015-01-02') } }
 
-      pending 'sets options' do
+      it 'sets options for high granularity' do
         expect(result).to include(
-          "fq" => ["timestamp:[2015-01-01 TO *]"],
+          "fq" => ["timestamp:[2015-01-01T00:00:00Z TO 2015-01-02T23:59:59.999Z]"],
           "sort" => "timestamp asc"
         )
       end
+      # rubocop:disable RSpec/NestedGroups
+      context 'low granularity' do
+        let(:options) { { granularity: OAI::Const::Granularity::LOW } }
+
+        it 'sets options' do
+          expect(wrapper.granularity).to eql(OAI::Const::Granularity::LOW)
+          expect(result).to include(
+            "fq" => ["timestamp:[2015-01-01 TO 2015-01-02]"],
+            "sort" => "timestamp asc"
+          )
+        end
+        context 'same value for endpoints' do
+          let(:constraints) { { from: Date.parse('2015-01-01'), until: Date.parse('2015-01-01') } }
+
+          it 'sets options' do
+            expect(wrapper.granularity).to eql(OAI::Const::Granularity::LOW)
+            expect(result).to include(
+              "fq" => ["timestamp:\"2015-01-01\""],
+              "sort" => "timestamp asc"
+            )
+          end
+        end
+      end
+      # rubocop:enable RSpec/NestedGroups
     end
 
     context 'string date options' do
-      let(:options) { { from: '2015-01-01', until: '2015-01-02' } }
+      let(:constraints) { { from: '2015-01-01', until: '2015-01-02' } }
 
       it 'sets options when from' do
-        options.delete(:until)
+        constraints.delete(:until)
         expect(result).to include(
           "fq" => ["timestamp:[2015-01-01 TO *]"],
           "sort" => "timestamp asc"
         )
       end
       it 'sets options when until' do
-        options.delete(:from)
+        constraints.delete(:from)
         expect(result).to include(
           "fq" => ["timestamp:[* TO 2015-01-02]"],
           "sort" => "timestamp asc"
@@ -205,23 +229,23 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
     end
 
     context 'string time options' do
-      let(:options) { { from: '2015-01-01T00:00:00.000Z', until: '2015-01-02T00:00:00.000Z' } }
+      let(:constraints) { { from: '2015-01-01T00:00:00.000Z', until: '2015-01-02T00:00:00.000Z' } }
 
       it 'sets options when from' do
-        options.delete(:until)
+        constraints.delete(:until)
         expect(result).to include(
           "fq" => ["timestamp:[2015-01-01T00:00:00.000Z TO *]"],
           "sort" => "timestamp asc"
         )
       end
-      pending 'sets options when until' do
-        options.delete(:from)
+      it 'sets options when until' do
+        constraints.delete(:from)
         expect(result).to include(
           "fq" => ["timestamp:[* TO 2015-01-02T00:00:00.000Z]"],
           "sort" => "timestamp asc"
         )
       end
-      pending 'sets options when range' do
+      it 'sets options when range' do
         expect(result).to include(
           "fq" => ["timestamp:[2015-01-01T00:00:00.000Z TO 2015-01-02T00:00:00.000Z]"],
           "sort" => "timestamp asc"

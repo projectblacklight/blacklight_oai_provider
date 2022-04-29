@@ -1,6 +1,6 @@
 module BlacklightOaiProvider
   class SolrDocumentWrapper < ::OAI::Provider::Model
-    attr_reader :document_model, :timestamp_field, :solr_timestamp, :limit
+    attr_reader :document_model, :timestamp_field, :solr_timestamp, :limit, :granularity
 
     def initialize(controller, options = {})
       @controller      = controller
@@ -9,6 +9,7 @@ module BlacklightOaiProvider
       @timestamp_field = 'timestamp' # method name used by ruby-oai
       @limit           = options[:limit] || 15
       @set             = options[:set_model] || BlacklightOaiProvider::SolrSet
+      @granularity = options[:granularity] || OAI::Const::Granularity::HIGH
 
       @set.controller = @controller
       @set.fields = options[:set_fields]
@@ -66,16 +67,20 @@ module BlacklightOaiProvider
       select_partial(token)
     end
 
-    def conditions(options) # conditions/query derived from options
+    def conditions(constraints) # conditions/query derived from options
       query = search_service.search_builder.merge(sort: "#{solr_timestamp} asc", rows: limit).query
 
-      if options[:from].present? || options[:until].present?
-        query.append_filter_query(
-          "#{solr_timestamp}:[#{solr_date(options[:from])} TO #{solr_date(options[:until]).gsub('Z', '.999Z')}]"
-        )
+      if constraints[:from].present? || constraints[:until].present?
+        from_val = solr_date(constraints[:from])
+        to_val = solr_date(constraints[:until], true)
+        if from_val == to_val
+          query.append_filter_query("#{solr_timestamp}:\"#{from_val}\"")
+        else
+          query.append_filter_query("#{solr_timestamp}:[#{from_val} TO #{to_val}]")
+        end
       end
 
-      query.append_filter_query(@set.from_spec(options[:set])) if options[:set].present?
+      query.append_filter_query(@set.from_spec(constraints[:set])) if constraints[:set].present?
       query
     end
 
@@ -85,14 +90,31 @@ module BlacklightOaiProvider
       conditions(token.to_conditions_hash).merge(start: token.last)
     end
 
-    def solr_date(time)
-      if time.respond_to?(:xmlschema)
-        time.utc.xmlschema # Force UTC.
-      elsif time.blank?
-        '*'
+    def solr_date(time, end_val = false)
+      return '*' if time.blank?
+      case time
+      when Date
+        return granularize_date_value(time, end_val)
+      when Time
+        return granularize_time_value(time, end_val)
       else
-        time.to_s
+        return time.to_s
       end
+    end
+
+    def granularize_date_value(value, end_val)
+      return value.xmlschema[0..9] if granularity == OAI::Const::Granularity::LOW
+
+      # get last second of the day if end of range, else use first second of day
+      value = end_val ? Time.xmlschema((value + 1).xmlschema) - 1 : Time.xmlschema(value.xmlschema)
+      granularize_time_value(value, end_val)
+    end
+
+    def granularize_time_value(value, end_val)
+      value = value.utc
+      return value.xmlschema[0..9] if granularity == OAI::Const::Granularity::LOW
+
+      end_val ? value.xmlschema.sub(/(\:\d{2})Z$/, '\1.999Z') : value.xmlschema
     end
 
     def timestamp_presence(solr_doc)
