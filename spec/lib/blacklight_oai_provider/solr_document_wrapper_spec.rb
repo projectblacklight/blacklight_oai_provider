@@ -128,4 +128,105 @@ RSpec.describe BlacklightOaiProvider::SolrDocumentWrapper do
       end
     end
   end
+
+  describe '#conditions' do
+    include_context "timestamp_searches"
+
+    subject(:result) { wrapper.conditions(options) }
+
+    let(:search_builder_class) do
+      Class.new(Blacklight::SearchBuilder) do
+        include Blacklight::Solr::SearchBuilderBehavior
+      end
+    end
+    let(:search_builder) { search_builder_class.new(controller) }
+
+    context 'time options' do
+      let(:options) { { from: Time.utc(2015, 1, 1), until: Time.utc(2015, 1, 2) } }
+
+      it 'sets options when from' do
+        options.delete(:until)
+        expect(result).to include(
+          "fq" => ["timestamp:[2015-01-01T00:00:00Z TO *]"],
+          "sort" => "timestamp asc"
+        )
+      end
+
+      it 'sets options when until' do
+        options.delete(:from)
+        expect(result).to include(
+          "fq" => ["timestamp:[* TO 2015-01-02T00:00:00.999Z]"],
+          "sort" => "timestamp asc"
+        )
+      end
+
+      it 'sets options when range' do
+        expect(result).to include(
+          "fq" => ["timestamp:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00.999Z]"],
+          "sort" => "timestamp asc"
+        )
+      end
+    end
+
+    context 'date options' do
+      let(:options) { { from: Date.parse('2015-01-01') } }
+
+      pending 'sets options' do
+        expect(result).to include(
+          "fq" => ["timestamp:[2015-01-01 TO *]"],
+          "sort" => "timestamp asc"
+        )
+      end
+    end
+
+    context 'string date options' do
+      let(:options) { { from: '2015-01-01', until: '2015-01-02' } }
+
+      it 'sets options when from' do
+        options.delete(:until)
+        expect(result).to include(
+          "fq" => ["timestamp:[2015-01-01 TO *]"],
+          "sort" => "timestamp asc"
+        )
+      end
+      it 'sets options when until' do
+        options.delete(:from)
+        expect(result).to include(
+          "fq" => ["timestamp:[* TO 2015-01-02]"],
+          "sort" => "timestamp asc"
+        )
+      end
+      it 'sets options when range' do
+        expect(result).to include(
+          "fq" => ["timestamp:[2015-01-01 TO 2015-01-02]"],
+          "sort" => "timestamp asc"
+        )
+      end
+    end
+
+    context 'string time options' do
+      let(:options) { { from: '2015-01-01T00:00:00.000Z', until: '2015-01-02T00:00:00.000Z' } }
+
+      it 'sets options when from' do
+        options.delete(:until)
+        expect(result).to include(
+          "fq" => ["timestamp:[2015-01-01T00:00:00.000Z TO *]"],
+          "sort" => "timestamp asc"
+        )
+      end
+      pending 'sets options when until' do
+        options.delete(:from)
+        expect(result).to include(
+          "fq" => ["timestamp:[* TO 2015-01-02T00:00:00.000Z]"],
+          "sort" => "timestamp asc"
+        )
+      end
+      pending 'sets options when range' do
+        expect(result).to include(
+          "fq" => ["timestamp:[2015-01-01T00:00:00.000Z TO 2015-01-02T00:00:00.000Z]"],
+          "sort" => "timestamp asc"
+        )
+      end
+    end
+  end
 end

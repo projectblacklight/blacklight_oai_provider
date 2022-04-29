@@ -66,12 +66,6 @@ module BlacklightOaiProvider
       select_partial(token)
     end
 
-    private
-
-    def token_conditions(token)
-      conditions(token.to_conditions_hash).merge(start: token.last)
-    end
-
     def conditions(options) # conditions/query derived from options
       query = search_service.search_builder.merge(sort: "#{solr_timestamp} asc", rows: limit).query
 
@@ -83,6 +77,12 @@ module BlacklightOaiProvider
 
       query.append_filter_query(@set.from_spec(options[:set])) if options[:set].present?
       query
+    end
+
+    private
+
+    def token_conditions(token)
+      conditions(token.to_conditions_hash).merge(start: token.last)
     end
 
     def solr_date(time)
