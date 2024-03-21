@@ -35,10 +35,18 @@ module BlacklightOaiProvider
     def encode_conditions
       encoded_token = @prefix.to_s.dup
       encoded_token << ".s(#{set})" if set
-      encoded_token << ".f(#{from.utc.xmlschema})" if from
-      encoded_token << ".u(#{self.until.utc.xmlschema})" if self.until
+      encoded_token << ".f(#{date_field_value(from)})" if from
+      encoded_token << ".u(#{date_field_value(self.until)})" if self.until
       encoded_token << ".t(#{total})" if total
       encoded_token << ":#{last}"
+    end
+
+    def date_field_value(date_field)
+      if from.respond_to?(:utc)
+        return date_field.utc.xmlschema
+      else
+        return date_field.xmlschema
+      end
     end
 
     def to_xml
